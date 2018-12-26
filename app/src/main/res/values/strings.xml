@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">签到</string>
+    <string name="title_activity_login_or_signup">LoginOrSignupActivity</string>
+</resources>

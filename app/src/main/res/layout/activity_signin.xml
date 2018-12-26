@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+    <Button
+            android:id="@+id/btn_face_verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="人脸验证"
+            android:layout_margin="16dp"/>
+
+    <Button
+            android:id="@+id/btn_wifi_verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="wifi验证"
+            android:layout_margin="16dp"/>
+
+</LinearLayout>

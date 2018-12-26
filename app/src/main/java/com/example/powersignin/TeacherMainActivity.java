@@ -1,0 +1,239 @@
+package com.example.powersignin;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.*;
+import android.widget.TextView;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import com.example.powersignin.bean.Classroom;
+
+import java.util.List;
+
+public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener
+{
+    private static final String EXTRA_TEACHER_USERNAME = "teacher_username";
+    private static final String EXTRA_TEACHER_OBJECTID = "teacher_objectid";
+    private static final String EXTRA_TEACHER_NICKNAME = "teacher_nickname";
+
+    private Toolbar mToolbar;
+    private RecyclerView mRecyclerView;
+    private TextView mEmptyText;
+    private SwipeRefreshLayout mRefresh;
+
+    private String mTeacherObjectId;
+    private String mTeacherUsername;
+    private String mTeacherNickname;
+    private List<Classroom> classrooms;
+
+    public static Intent newIntent(Context context, String teacherUsername, String teacherObjectId, String teacherNickname)
+    {
+        Intent intent = new Intent(context, TeacherMainActivity.class);
+        intent.putExtra(EXTRA_TEACHER_USERNAME, teacherUsername);
+        intent.putExtra(EXTRA_TEACHER_OBJECTID, teacherObjectId);
+        intent.putExtra(EXTRA_TEACHER_NICKNAME, teacherNickname);
+        return intent;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void setContentView()
+    {
+        setContentView(R.layout.activity_teacher_main);
+    }
+
+    @Override
+    protected void initViews()
+    {
+        mToolbar = (Toolbar)findViewById(R.id.toolbar_teacher_main_activity);
+        mRecyclerView = (RecyclerView)findViewById(R.id.recycler_view_teacher_class);
+        mEmptyText = (TextView)findViewById(R.id.text_empty_text);
+        mRefresh = (SwipeRefreshLayout)findViewById(R.id.refresh);
+        mRefresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+    }
+
+    @Override
+    protected void initListeners()
+    {
+        mRefresh.setOnRefreshListener(this);
+    }
+
+    @Override
+    protected void initData()
+    {
+        //获取教师用户名
+        mTeacherUsername = getIntent().getStringExtra(EXTRA_TEACHER_USERNAME);
+
+        //获取教师objectId
+        mTeacherObjectId = getIntent().getStringExtra(EXTRA_TEACHER_OBJECTID);
+
+        //获取教师nickname
+        mTeacherNickname = getIntent().getStringExtra(EXTRA_TEACHER_NICKNAME);
+
+        //设置Toolbar
+        setSupportActionBar(mToolbar);
+        setToolbarTitle(mTeacherNickname + "管理的班级");
+
+        updateClassroomsList();
+    }
+
+    //设置Toolbar菜单
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_teacher_main_activity_toolbar, menu);
+        return true;
+    }
+
+    //响应Toolbar菜单
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.new_class:
+                startNewClassActivity(mTeacherObjectId);
+                break;
+            case R.id.my_info:
+                startUserInfoActivity(mTeacherUsername, mTeacherObjectId, mTeacherNickname, "teacher");
+                break;
+        }
+
+        return true;
+    }
+
+    //下拉刷新时执行
+    @Override
+    public void onRefresh()
+    {
+        //更新班级列表
+        updateClassroomsList();
+    }
+
+    private class ViewHolder extends RecyclerView.ViewHolder
+    {
+        public TextView classNameTextView;
+        public TextView classCodeTextView;
+
+        public ViewHolder(View itemView)
+        {
+            super(itemView);
+            classNameTextView = (TextView)itemView.findViewById(R.id.text_teacher_class_name);
+            classCodeTextView = (TextView)itemView.findViewById(R.id.text_teacher_class_code);
+
+            CardView cardView = (CardView)itemView.findViewById(R.id.card_view);
+            cardView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    startTeacherClassInfoActivity(classNameTextView.getText().toString(), classCodeTextView.getText().toString());
+                }
+            });
+        }
+    }
+
+    private class Adapter extends RecyclerView.Adapter<ViewHolder>
+    {
+        private List<Classroom> classroom;
+
+        public Adapter(List<Classroom> classroom)
+        {
+            this.classroom = classroom;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            LayoutInflater layoutInflater = LayoutInflater.from(TeacherMainActivity.this);
+            View view = layoutInflater.inflate(R.layout.item_teacher_class, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position)
+        {
+            Classroom classroom = classrooms.get(position);
+            holder.classNameTextView.setText(classroom.getDescription());
+            holder.classCodeTextView.setText(classroom.getObjectId());
+        }
+
+        @Override
+        public int getItemCount()
+        {
+            return classrooms.size();
+        }
+    }
+
+    private void updateClassroomsList()
+    {
+        findTeacherClassrooms(mTeacherObjectId, new FindListener<Classroom>()
+        {
+            @Override
+            public void done(List<Classroom> list, BmobException e)
+            {
+                if (e == null)
+                {
+                    //班级列表为空
+                    if (list.size() == 0)
+                    {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mEmptyText.setVisibility(View.VISIBLE);
+                    }
+                    //班级列表不为空
+                    else
+                    {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mEmptyText.setVisibility(View.GONE);
+                        classrooms = list;
+                        //设置RecyclerView
+                        mRecyclerView.setLayoutManager(new LinearLayoutManager(TeacherMainActivity.this));
+                        mRecyclerView.setAdapter(new Adapter(classrooms));
+                    }
+
+
+                }
+                else
+                {
+                    toast("获取班级数据失败: " + e.getMessage());
+                }
+
+                //关闭刷新状态
+                mRefresh.setRefreshing(false);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == REQUEST_NEW_CLASS)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                //更新教师班级列表
+                updateClassroomsList();
+            }
+        }
+        else if (requestCode == REQUEST_TEACHER_CLASS_INFO)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                //更新教师班级列表
+                updateClassroomsList();
+            }
+        }
+    }
+}
