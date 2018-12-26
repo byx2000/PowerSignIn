@@ -51,7 +51,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initViews()
     {
-        mToolbar = (Toolbar)findViewById(R.id.toolbar_signup_activity);
+        //mToolbar = (Toolbar)findViewById(R.id.toolbar_signup_activity);
         mUsernameEditText = (EditText)findViewById(R.id.edit_username);
         mPasswordEditText = (EditText)findViewById(R.id.edit_password);
         mNicknameEditText = (EditText)findViewById(R.id.edit_nickname);
@@ -60,7 +60,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         mSignupButton = (Button)findViewById(R.id.btn_signup);
         mFaceImage = (ImageView)findViewById(R.id.img_face_photo);
 
-        Glide.with(this).load(R.drawable.empty).into(mFaceImage);
+        //Glide.with(this).load(R.drawable.empty).into(mFaceImage);
     }
 
     @Override
@@ -73,10 +73,34 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initData()
     {
-        setSupportActionBar(mToolbar);
-        setToolbarTitle("注册");
+        //setSupportActionBar(mToolbar);
+        //setToolbarTitle("注册");
         mStudentRadioButton.setChecked(true);
         hasFacePhoto = false;
+
+        //开启摄像机
+        mImageFile = new File(getExternalCacheDir(), "face.jpg");
+        if (mImageFile.exists())
+        {
+            mImageFile.delete();
+        }
+        try
+        {
+            mImageFile.createNewFile();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (Build.VERSION.SDK_INT >= 24)
+        {
+            mImageUri = FileProvider.getUriForFile(SignupActivity.this, "com.example.powersignin.fileprovider", mImageFile);
+        }
+        else
+        {
+            mImageUri = Uri.fromFile(mImageFile);
+        }
     }
 
     @Override
@@ -196,7 +220,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         else if (v == mFaceImage)
         {
             //开启摄像机
-            mImageFile = new File(getExternalCacheDir(), "face.jpg");
+            /*mImageFile = new File(getExternalCacheDir(), "face.jpg");
             if (mImageFile.exists())
             {
                 mImageFile.delete();
@@ -217,7 +241,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
             else
             {
                 mImageUri = Uri.fromFile(mImageFile);
-            }
+            }*/
 
             startCameraActivity(mImageUri);
         }
