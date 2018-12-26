@@ -14,4 +14,20 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <!-- 自定义按钮样式 -->
+    <style name="CustomButton" parent="android:style/Widget.Holo.Button">
+        <item name="android:background">@drawable/button_normal</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+    </style>
+
+    <!-- 自定义编辑框样式 -->
+    <style name="CustomEditText" parent="android:style/Widget.Holo.EditText">
+        <item name="android:background">#00000000</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:padding">5dip</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

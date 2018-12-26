@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initViews()
     {
-        mToolbar = (Toolbar)findViewById(R.id.toolbar_login_activity);
+        //mToolbar = (Toolbar)findViewById(R.id.toolbar_login_activity);
         mUsernameEditText = (EditText)findViewById(R.id.edit_username);
         mPasswordEditText = (EditText)findViewById(R.id.edit_password);
         mLoginButton = (Button)findViewById(R.id.btn_login);
@@ -56,8 +56,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initData()
     {
-        setSupportActionBar(mToolbar);
-        setToolbarTitle("登陆");
+        //setSupportActionBar(mToolbar);
+        //setToolbarTitle("登陆");
     }
 
     @Override
