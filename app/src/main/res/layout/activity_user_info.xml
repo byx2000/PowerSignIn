@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<!--<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -10,10 +10,19 @@
             android:id="@+id/toolbar_teacher_info_activity"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap" />
+            app:layout_scrollFlags="scroll|enterAlways|snap" >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="我的信息"
+                android:textColor="#000000"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -128,3 +137,87 @@
             android:text="退出登陆"/>
 
 </LinearLayout>
+-->
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_teacher_info_activity"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways|snap" >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="我的信息"
+                android:textColor="#000000"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+        <LinearLayout
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/radius_bg"
+                android:orientation="vertical"
+                android:padding="10dip">
+
+            <ImageView
+                    android:id="@+id/img_face"
+                    android:src="@drawable/account"
+                    android:layout_width="112.5dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"/>
+
+            <TextView
+                    android:id="@+id/text_identity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomTextView"
+                    android:text="身份: "/>
+
+            <TextView
+                    android:id="@+id/text_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomTextView"
+                    android:text="昵称: "/>
+
+            <TextView
+                    android:id="@+id/text_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomTextView"
+                    android:text="手机: "/>
+
+
+        </LinearLayout>
+
+        <Button
+                android:layout_below="@id/info"
+                android:id="@+id/btn_logout"
+                style="@style/CustomButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="退出登陆"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

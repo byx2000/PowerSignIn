@@ -6,11 +6,12 @@
     <item
             android:id="@+id/start_signin"
             android:title="发起签到"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
 
     <item
             android:id="@+id/delete_class"
             android:title="删除班级"
-            app:showAsAction="never"/>
+            android:icon="@drawable/delete"
+            app:showAsAction="always"/>
 
 </menu>

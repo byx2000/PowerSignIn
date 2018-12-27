@@ -3,7 +3,9 @@ package com.example.powersignin;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,7 +86,11 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
 
         //设置Toolbar
         setSupportActionBar(mToolbar);
-        setToolbarTitle(mTeacherNickname + "管理的班级");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView textView = (TextView)findViewById(R.id.text_title);
+        textView.setText(mTeacherNickname + "管理的班级");
+        //setToolbarTitle(mTeacherNickname + "管理的班级");
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         updateClassroomsList();
     }
@@ -126,12 +132,14 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
     {
         public TextView classNameTextView;
         public TextView classCodeTextView;
+        public TextView isSignin;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
             classNameTextView = (TextView)itemView.findViewById(R.id.text_teacher_class_name);
             classCodeTextView = (TextView)itemView.findViewById(R.id.text_teacher_class_code);
+            isSignin = (TextView)itemView.findViewById(R.id.text_issignin);
 
             CardView cardView = (CardView)itemView.findViewById(R.id.card_view);
             cardView.setOnClickListener(new View.OnClickListener()
@@ -162,12 +170,23 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
             return new ViewHolder(view);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position)
         {
             Classroom classroom = classrooms.get(position);
             holder.classNameTextView.setText(classroom.getDescription());
             holder.classCodeTextView.setText(classroom.getObjectId());
+            if (classroom.isSignin())
+            {
+                holder.isSignin.setText("正在签到");
+                holder.isSignin.setTextColor(getColor(R.color.colorEmphasis));
+            }
+            else
+            {
+                holder.isSignin.setText("未在签到");
+                holder.isSignin.setTextColor(getColor(R.color.colorIgnore));
+            }
         }
 
         @Override
@@ -230,6 +249,11 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
         else if (requestCode == REQUEST_TEACHER_CLASS_INFO)
         {
             if (resultCode == RESULT_OK)
+            {
+                //更新教师班级列表
+                updateClassroomsList();
+            }
+            else
             {
                 //更新教师班级列表
                 updateClassroomsList();

@@ -30,7 +30,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private TextView mIdentityTextView;
     private TextView mUsernameTextView;
     private TextView mNicknameTextView;
-    private TextView mObjectIdTextView;
+    //private TextView mObjectIdTextView;
     private Button mLogoutButton;
     private ImageView mFaceImage;
 
@@ -68,7 +68,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mIdentityTextView = (TextView)findViewById(R.id.text_identity);
         mUsernameTextView = (TextView)findViewById(R.id.text_username);
         mNicknameTextView = (TextView)findViewById(R.id.text_nickname);
-        mObjectIdTextView = (TextView)findViewById(R.id.text_teacher_objectid);
+        //mObjectIdTextView = (TextView)findViewById(R.id.text_teacher_objectid);
         mLogoutButton = (Button)findViewById(R.id.btn_logout);
         mFaceImage = (ImageView)findViewById(R.id.img_face);
     }
@@ -84,25 +84,26 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     {
         //设置Toolbar
         setSupportActionBar(teacherInfoActivityToolbar);
-        setToolbarTitle("我的信息");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //setToolbarTitle("我的信息");
 
         mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
-        mUsernameTextView.setText(mUsername);
+        mUsernameTextView.setText(mUsernameTextView.getText() + mUsername);
 
         mObjectId = getIntent().getStringExtra(EXTRA_OBJECTID);
-        mObjectIdTextView.setText(mObjectId);
+        //mObjectIdTextView.setText(mObjectId);
 
         mNickname = getIntent().getStringExtra(EXTRA_NICKNAME);
-        mNicknameTextView.setText(mNickname);
+        mNicknameTextView.setText(mNicknameTextView.getText() + mNickname);
 
         mIdentity = getIntent().getStringExtra(EXTRA_IDENTITY);
         if (mIdentity.equals("teacher"))
         {
-            mIdentityTextView.setText("教师");
+            mIdentityTextView.setText(mIdentityTextView.getText() + "教师");
         }
         else
         {
-            mIdentityTextView.setText("学生");
+            mIdentityTextView.setText(mIdentityTextView.getText() + "学生");
         }
 
         //下载面部图片

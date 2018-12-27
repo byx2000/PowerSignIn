@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
     private Toolbar mToolbar;
     private TextView mClassroomNameTextView;
     private TextView mClassroomCodeTextView;
+    private TextView mIsSignin;
     private Button mViewStudentButton;
     private Button mViewSigninHistory;
     private Menu mMenu;
@@ -41,7 +43,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
 
     private WifiUtil mWifiUtil;
 
-    //private boolean isSignin;
+    private boolean isSignin;
 
     //private ClassInfo classInfo;
 
@@ -75,6 +77,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         mClassroomCodeTextView = (TextView)findViewById(R.id.text_teacher_class_info_code);
         mViewStudentButton = (Button)findViewById(R.id.btn_view_student_info);
         mViewSigninHistory = (Button)findViewById(R.id.btn_sign_in_history);
+        mIsSignin = (TextView)findViewById(R.id.text_issignin);
     }
 
     @Override
@@ -89,17 +92,43 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
     {
         //设置Toolbar
         setSupportActionBar(mToolbar);
-        setToolbarTitle("班级信息");
+        //setToolbarTitle("班级信息");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //获取班级信息
         mClassroomName = getIntent().getStringExtra(EXTRA_CLASS_NAME);
         mClassroomObjectId = getIntent().getStringExtra(EXTRA_CLASS_CODE);
 
         //显示班级信息
-        mClassroomNameTextView.setText(mClassroomName);
-        mClassroomCodeTextView.setText(mClassroomObjectId);
+        mClassroomNameTextView.setText("\t" + mClassroomName);
+        mClassroomCodeTextView.setText("\t" + mClassroomObjectId);
 
         //isSignin = false;
+        findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
+        {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void done(Classroom classroom, BmobException e)
+            {
+                if (e == null)
+                {
+                    if (classroom.isSignin())
+                    {
+                        mIsSignin.setText("\t正在签到");
+                        mIsSignin.setTextColor(getColor(R.color.colorEmphasis));
+                    }
+                    else
+                    {
+                        mIsSignin.setText("\t未在签到");
+                        mIsSignin.setTextColor(getColor(R.color.colorIgnore));
+                    }
+                }
+                else
+                {
+                    toast("获取班级信息失败");
+                }
+            }
+        });
 
         mWifiUtil = new WifiUtil(this);
     }
@@ -150,6 +179,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                 //停止签到
                                 setClassroomFinishSignin(mClassroomObjectId, new UpdateListener()
                                 {
+                                    @RequiresApi(api = Build.VERSION_CODES.M)
                                     @Override
                                     public void done(BmobException e)
                                     {
@@ -158,6 +188,8 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                             toast("停止签到成功，请关闭热点");
                                             item.setTitle("发起签到");
                                             item.setEnabled(true);
+                                            mIsSignin.setText("\t未在签到");
+                                            mIsSignin.setTextColor(getColor(R.color.colorIgnore));
                                             flag = false;
                                             startWifiApSettingActivity();
                                         }
@@ -184,6 +216,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                         mSigninEventObjectId = signinEventObjectId;
                                         setClassroomSignin(mClassroomObjectId, signinEventObjectId, new UpdateListener()
                                         {
+                                            @RequiresApi(api = Build.VERSION_CODES.M)
                                             @Override
                                             public void done(BmobException e)
                                             {
@@ -195,6 +228,8 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                                     //isSignin = true;
                                                     item.setTitle("停止签到");
                                                     item.setEnabled(true);
+                                                    mIsSignin.setText("\t正在签到");
+                                                    mIsSignin.setTextColor(getColor(R.color.colorEmphasis));
 
                                                     //打开系统热点设置界面
                                                     toast("发起签到成功，请开启热点");

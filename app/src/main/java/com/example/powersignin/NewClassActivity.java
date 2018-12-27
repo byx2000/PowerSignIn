@@ -56,7 +56,8 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
     {
         //设置Toolbar
         setSupportActionBar(newClassActivityToolbar);
-        setToolbarTitle("新建班级");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //setToolbarTitle("新建班级");
 
         teacherObjectId = getIntent().getStringExtra(EXTRA_TEACHER_OBJECTID);
     }
@@ -64,10 +65,17 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v)
     {
+        String description = classroomDescriptionTextView.getText().toString();
+
+        if (description.equals(""))
+        {
+            toast("请输入班级描述");
+            return;
+        }
+
         createClassroomButton.setEnabled(false);
         createClassroomButton.setText("正在创建...");
 
-        String description = classroomDescriptionTextView.getText().toString();
         saveClassroom(description, teacherObjectId, new SaveClassroomListener()
         {
             @Override
