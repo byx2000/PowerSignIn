@@ -2,7 +2,9 @@ package com.example.powersignin;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +14,10 @@ import android.view.*;
 import android.widget.TextView;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListener;
 import com.example.powersignin.bean.Classroom;
+import com.example.powersignin.bean.Student;
+import com.example.powersignin.bean.Teacher;
 
 import java.util.List;
 
@@ -77,7 +82,10 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
         mStudentNickname = getIntent().getStringExtra(EXTRA_STUDENT_NICKNAME);
 
         setSupportActionBar(mToolbar);
-        setToolbarTitle(mStudentNickname + "加入的班级");
+        //setToolbarTitle(mStudentNickname + "加入的班级");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView textView = (TextView)findViewById(R.id.text_title);
+        textView.setText(mStudentNickname + "加入的班级");
 
         updateClassroomsList();
     }
@@ -145,14 +153,15 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
     private class ViewHolder extends RecyclerView.ViewHolder
     {
         public TextView classNameTextView;
-        public TextView classCodeTextView;
+        public TextView classTeacher;
         public TextView signinStateTextView;
+        public String classroomObjectId;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
             classNameTextView = (TextView)itemView.findViewById(R.id.text_class_name);
-            classCodeTextView = (TextView)itemView.findViewById(R.id.text_class_code);
+            classTeacher = (TextView)itemView.findViewById(R.id.text_teacher);
             signinStateTextView = (TextView)itemView.findViewById(R.id.text_signin_state);
 
             CardView cardView = (CardView)itemView.findViewById(R.id.card_view);
@@ -161,9 +170,9 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
                 @Override
                 public void onClick(View v)
                 {
-                    //launchTeacherClassInfoActivity(classNameTextView.getText().toString(), classCodeTextView.getText().toString());
+                    //launchTeacherClassInfoActivity(classNameTextView.getText().toString(), classTeacher.getText().toString());
                     //toast("进入班级详情");
-                    startStudentClassInfoActivity(classCodeTextView.getText().toString(), mStudentObjectId);
+                    startStudentClassInfoActivity(classroomObjectId, mStudentObjectId);
                 }
             });
         }
@@ -186,20 +195,60 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
             return new StudentMainActivity.ViewHolder(view);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
-        public void onBindViewHolder(StudentMainActivity.ViewHolder holder, int position)
+        public void onBindViewHolder(final StudentMainActivity.ViewHolder holder, int position)
         {
-            Classroom classroom = classrooms.get(position);
+            final Classroom classroom = classrooms.get(position);
             holder.classNameTextView.setText(classroom.getDescription());
-            holder.classCodeTextView.setText(classroom.getObjectId());
+            holder.classTeacher.setText(classroom.getTeacherNickname());
+            //holder.classTeacher.setText(classroom.getTeacher().getNickname());
+            /*findTeacherByTeacherObjectId(classroom.getTeacher().getObjectId(), new QueryListener<Teacher>()
+            {
+                @Override
+                public void done(Teacher teacher, BmobException e)
+                {
+                    holder.classTeacher.setText(teacher.getNickname());
+                }
+            });*/
             if (classroom.isSignin())
             {
-                holder.signinStateTextView.setText("是");
+                //判断是否签到成功
+                findSigninedStudents(classroom.getCurrentSigninEvent(), new FindListener<Student>()
+                {
+                    @Override
+                    public void done(List<Student> list, BmobException e)
+                    {
+                        if (e == null)
+                        {
+                            boolean flag = true;
+                            for (Student student : list)
+                            {
+                                if (student.getObjectId().equals(mStudentObjectId))
+                                {
+                                    holder.signinStateTextView.setText("签到成功");
+                                    holder.signinStateTextView.setTextColor(getColor(R.color.green));
+                                    flag = false;
+                                    break;
+                                }
+                            }
+
+                            if (flag)
+                            {
+                                holder.signinStateTextView.setText("正在签到");
+                                holder.signinStateTextView.setTextColor(getColor(R.color.colorEmphasis));
+                            }
+                        }
+                    }
+                });
             }
             else
             {
-                holder.signinStateTextView.setText("否");
+                holder.signinStateTextView.setText("未在签到");
+                holder.signinStateTextView.setTextColor(getColor(R.color.colorIgnore));
             }
+
+            holder.classroomObjectId = classroom.getObjectId();
         }
 
         @Override

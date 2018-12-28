@@ -482,7 +482,7 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     //保存班级
-    protected void saveClassroom(String description, String teacherObjectId, final SaveClassroomListener saveClassroomListener)
+    protected void saveClassroom(String description, String teacherObjectId, String teacherNickname, final SaveClassroomListener saveClassroomListener)
     {
         Classroom classroom = new Classroom();
         final Teacher teacher = new Teacher();
@@ -490,6 +490,7 @@ public abstract class BaseActivity extends AppCompatActivity
         classroom.setDescription(description);
         classroom.setTeacher(teacher);
         classroom.setSignin(false);
+        classroom.setTeacherNickname(teacherNickname);
         //classroom.save(saveListener);
         classroom.save(new SaveListener<String>()
         {

@@ -7,6 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.QueryListener;
+import com.example.powersignin.bean.Teacher;
 
 public class NewClassActivity extends BaseActivity implements View.OnClickListener
 {
@@ -65,7 +68,7 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v)
     {
-        String description = classroomDescriptionTextView.getText().toString();
+        final String description = classroomDescriptionTextView.getText().toString();
 
         if (description.equals(""))
         {
@@ -76,22 +79,36 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
         createClassroomButton.setEnabled(false);
         createClassroomButton.setText("正在创建...");
 
-        saveClassroom(description, teacherObjectId, new SaveClassroomListener()
+        findTeacherByTeacherObjectId(teacherObjectId, new QueryListener<Teacher>()
         {
             @Override
-            public void succeed(String classroomObjectId)
+            public void done(Teacher teacher, BmobException e)
             {
-                toast("班级创建成功");
-                setResult(RESULT_OK);
-                finish();
-            }
+                if (e == null)
+                {
+                    saveClassroom(description, teacherObjectId, teacher.getNickname(), new SaveClassroomListener()
+                    {
+                        @Override
+                        public void succeed(String classroomObjectId)
+                        {
+                            toast("班级创建成功");
+                            setResult(RESULT_OK);
+                            finish();
+                        }
 
-            @Override
-            public void failed(String info)
-            {
-                toast("班级创建失败: " + info);
-                createClassroomButton.setEnabled(true);
-                createClassroomButton.setText("创建班级");
+                        @Override
+                        public void failed(String info)
+                        {
+                            toast("班级创建失败: " + info);
+                            createClassroomButton.setEnabled(true);
+                            createClassroomButton.setText("创建班级");
+                        }
+                    });
+                }
+                else
+                {
+                    toast("创建班级失败，请重试");
+                }
             }
         });
     }

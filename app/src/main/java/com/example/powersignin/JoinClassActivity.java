@@ -55,7 +55,8 @@ public class JoinClassActivity extends BaseActivity implements View.OnClickListe
     protected void initData()
     {
         setSupportActionBar(mToolbar);
-        setToolbarTitle("加入班级");
+        //setToolbarTitle("加入班级");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mStudentObjectId = getIntent().getStringExtra(EXTRA_STUDENT_OBJECTID);
     }

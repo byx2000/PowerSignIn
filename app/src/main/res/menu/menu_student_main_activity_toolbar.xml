@@ -5,11 +5,13 @@
     <item
             android:id="@+id/join_class"
             android:title="加入班级"
+            android:icon="@drawable/add"
             app:showAsAction="always"/>
 
     <item
             android:id="@+id/my_info"
             android:title="我的信息"
-            app:showAsAction="never"/>
+            android:icon="@drawable/me"
+            app:showAsAction="always"/>
 
 </menu>

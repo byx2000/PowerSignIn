@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
-
+<!--
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_new_class_activity"
             android:layout_width="match_parent"
@@ -55,6 +55,38 @@
                 android:text="创建班级"
                 android:textColor="#000000"
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+    </android.support.v7.widget.Toolbar>
+-->
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_new_class_activity"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways|snap" >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:layout_width="35dip"
+                    android:layout_height="35dip"
+                    android:src="@drawable/add"/>
+
+            <TextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新建班级"
+                    android:textColor="#000000"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+        </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
 

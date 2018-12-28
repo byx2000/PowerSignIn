@@ -24,6 +24,12 @@
         <item name="android:textColor">#ffffff</item>
     </style>
 
+    <style name="OkButton" parent="android:style/Widget.Holo.Button">
+        <item name="android:background">@drawable/button_ok</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
     <!-- 自定义编辑框样式 -->
     <style name="CustomEditText" parent="android:style/Widget.Holo.EditText">
         <item name="android:background">#00000000</item>

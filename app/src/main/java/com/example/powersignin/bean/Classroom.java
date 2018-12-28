@@ -23,6 +23,9 @@ public class Classroom extends BmobObject
     //当前正在进行的签到
     private String currentSigninEvent;
 
+    //班级教师的昵称
+    private String teacherNickname;
+
     public String getDescription()
     {
         return description;
@@ -81,5 +84,15 @@ public class Classroom extends BmobObject
     public void setCurrentSigninEvent(String currentSigninEvent)
     {
         this.currentSigninEvent = currentSigninEvent;
+    }
+
+    public String getTeacherNickname()
+    {
+        return teacherNickname;
+    }
+
+    public void setTeacherNickname(String teacherNickname)
+    {
+        this.teacherNickname = teacherNickname;
     }
 }

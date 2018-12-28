@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +20,6 @@ import cn.bmob.v3.listener.QueryListener;
 import com.example.powersignin.bean.Classroom;
 import com.example.powersignin.bean.Student;
 import com.example.powersignin.bean.Teacher;
-import com.example.powersignin.bean.User;
 
 import java.util.List;
 
@@ -31,7 +32,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     private TextView mClassroomNameTextView;
     private TextView mClassroomCodeTextView;
     private TextView mClassroomTeacherTextView;
-    private Button mViewStudentsButton;
     private Button mSigninButton;
 
     private String mClassroomObjectId;
@@ -64,7 +64,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mClassroomNameTextView = (TextView)findViewById(R.id.text_class_name);
-        mClassroomCodeTextView = (TextView)findViewById(R.id.text_class_code);
+        mClassroomCodeTextView = (TextView)findViewById(R.id.text_code);
         mClassroomTeacherTextView = (TextView)findViewById(R.id.text_class_teacher);
         //mViewStudentsButton = (Button)findViewById(R.id.btn_students);
         mSigninButton = (Button)findViewById(R.id.btn_signin);
@@ -81,11 +81,13 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     protected void initData()
     {
         setSupportActionBar(mToolbar);
-        setToolbarTitle("班级信息");
+        //setToolbarTitle("班级信息");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mClassroomObjectId = getIntent().getStringExtra(EXTRA_CLASSROOM_OBJECTID);
         findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
         {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void done(final Classroom classroom, BmobException e)
             {
@@ -93,8 +95,9 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                 {
                     String teacherObjectId = classroom.getTeacher().getObjectId();
                     mClassroomName = classroom.getDescription();
-                    mClassroomNameTextView.setText(mClassroomName);
-                    mClassroomCodeTextView.setText(mClassroomObjectId);
+                    mClassroomNameTextView.setText("\t" + mClassroomName);
+                    mClassroomCodeTextView.setText("\t" + mClassroomObjectId);
+                    mClassroomTeacherTextView.setText("\t" + classroom.getTeacherNickname());
                     if (classroom.isSignin())
                     {
                         //mSigninButton.setEnabled(true);
@@ -109,10 +112,12 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                                 {
                                     mSigninButton.setEnabled(true);
                                     mSigninButton.setText("点击签到");
+                                    mSigninButton.setTextColor(getColor(R.color.white));
                                     for (Student student : list)
                                     {
                                         if (student.getObjectId().equals(mStudentObjectId))
                                         {
+                                            mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
                                             mSigninButton.setEnabled(false);
                                             mSigninButton.setText("签到成功");
                                             break;
@@ -131,26 +136,8 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     {
                         mSigninButton.setEnabled(false);
                         mSigninButton.setText("签到尚未开始");
+                        mSigninButton.setTextColor(getColor(R.color.colorUnactive));
                     }
-                    //查找教师
-                    findTeacherByTeacherObjectId(teacherObjectId, new QueryListener<Teacher>()
-                    {
-                        @Override
-                        public void done(Teacher teacher, BmobException e)
-                        {
-                            if (e == null)
-                            {
-
-                                mClassroomTeacher = teacher.getNickname();
-                                mClassroomTeacherTextView.setText(mClassroomTeacher);
-
-                            }
-                            else
-                            {
-                                toast("查找教师失败: " + e.getMessage());
-                            }
-                        }
-                    });
                 }
                 else
                 {
@@ -179,7 +166,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
             case R.id.quit_class:
                 //显示退出警告对话框
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setIcon(R.drawable.ic_launcher_foreground);
+                builder.setIcon(R.drawable.warning);
                 builder.setTitle("退出班级");
                 builder.setMessage("确定要退出该班级吗?");
                 builder.setPositiveButton("是", new DialogInterface.OnClickListener()
@@ -225,7 +212,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     public void onClick(View v)
     {
         //查看同班同学
-        if (v == mViewStudentsButton)
+        /*if (v == mViewStudentsButton)
         {
             //查找该班级的所有学生
             findClassroomStudents(mClassroomObjectId, new FindListener<Student>()
@@ -274,12 +261,13 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     }
                 }
             });
-        }
+        }*/
         //进入签到页面
-        else if (v == mSigninButton)
+        if (v == mSigninButton)
         {
             findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
             {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void done(Classroom classroom, BmobException e)
                 {
@@ -294,6 +282,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                             toast("签到已停止");
                             mSigninButton.setEnabled(false);
                             mSigninButton.setText("签到尚未开始");
+                            mSigninButton.setTextColor(getColor(R.color.colorUnactive));
                         }
                     }
                 }
@@ -301,6 +290,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -308,6 +298,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         {
             if (resultCode == RESULT_OK)
             {
+                mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
                 mSigninButton.setEnabled(false);
                 mSigninButton.setText("签到成功");
                 toast("签到成功");

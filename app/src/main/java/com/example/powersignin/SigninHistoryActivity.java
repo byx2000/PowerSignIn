@@ -54,7 +54,8 @@ public class SigninHistoryActivity extends BaseActivity
     {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        setToolbarTitle("签到历史");
+        //setToolbarTitle("签到历史");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         mEmptyText = (TextView)findViewById(R.id.text_empty_text);

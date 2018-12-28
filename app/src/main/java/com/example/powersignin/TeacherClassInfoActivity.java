@@ -168,9 +168,9 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                     @Override
                     public void done(Classroom classroom, BmobException e)
                     {
-                        mSigninEventObjectId = classroom.getCurrentSigninEvent();
                         if (e == null)
                         {
+                            mSigninEventObjectId = classroom.getCurrentSigninEvent();
                             //处于签到状态
                             if (classroom.isSignin())
                             {
@@ -185,13 +185,22 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                     {
                                         if (e == null)
                                         {
-                                            toast("停止签到成功，请关闭热点");
                                             item.setTitle("发起签到");
                                             item.setEnabled(true);
                                             mIsSignin.setText("\t未在签到");
                                             mIsSignin.setTextColor(getColor(R.color.colorIgnore));
                                             flag = false;
-                                            startWifiApSettingActivity();
+                                            if (mWifiUtil.isHotspotOpen())
+                                            {
+                                                toast("停止签到成功，请关闭热点");
+                                                startWifiApSettingActivity();
+                                            }
+                                            else
+                                            {
+                                                toast("停止签到成功");
+                                                //显示签到结果
+                                                startSigninEventDetailActivity(mSigninEventObjectId);
+                                            }
                                         }
                                         else
                                         {
@@ -231,10 +240,18 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                                     mIsSignin.setText("\t正在签到");
                                                     mIsSignin.setTextColor(getColor(R.color.colorEmphasis));
 
-                                                    //打开系统热点设置界面
-                                                    toast("发起签到成功，请开启热点");
                                                     flag = true;
-                                                    startWifiApSettingActivity();
+
+                                                    if (!mWifiUtil.isHotspotOpen())
+                                                    {
+                                                        //打开系统热点设置界面
+                                                        toast("发起签到成功，请开启热点");
+                                                        startWifiApSettingActivity();
+                                                    }
+                                                    else
+                                                    {
+                                                        toast("发起签到成功");
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -265,7 +282,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
             case R.id.delete_class:
                 //显示删除警告对话框
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setIcon(R.drawable.ic_launcher_foreground);
+                builder.setIcon(R.drawable.warning);
                 builder.setTitle("删除班级");
                 builder.setMessage("确定要删除该班级吗?");
                 builder.setPositiveButton("是", new DialogInterface.OnClickListener()

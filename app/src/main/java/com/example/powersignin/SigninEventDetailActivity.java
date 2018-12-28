@@ -42,7 +42,8 @@ public class SigninEventDetailActivity extends BaseActivity
     {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        setToolbarTitle("签到详情");
+        //setToolbarTitle("签到详情");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mAbsent = (TextView)findViewById(R.id.text_absent);
     }
