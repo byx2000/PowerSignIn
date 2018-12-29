@@ -83,7 +83,6 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        //setToolbarTitle("签到");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mFaceVerify = (Button)findViewById(R.id.btn_face_verify);
         mWifiVerify = (Button)findViewById(R.id.btn_wifi_verify);
@@ -114,9 +113,6 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
         //人脸识别验证
         if (v == mFaceVerify)
         {
-            /*isFaceVerifyPass = true;
-            mFaceVerify.setEnabled(false);
-            mFaceVerify.setText("人脸验证已通过");*/
             pauseFaceVerifyButton();
 
             isFaceVerifyPass = false;
@@ -150,9 +146,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
         else if (v == mWifiVerify)
         {
             pauseWifiVerifyButton();
-            //isWifiVerifyPass = true;
-            //mWifiVerify.setEnabled(false);
-            //mWifiVerify.setText("WIFI验证已通过");
+
             if (!mWifiUtil.isGpsOpen())
             {
                 toast("请打开GPS");
@@ -174,9 +168,6 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                                 if (e == null)
                                 {
                                     mBssid = signinEvent.getBssid();
-                                    //toast(mBssid);
-                                    /*mWifiVerify.setEnabled(false);
-                                    mWifiVerify.setText("正在进行WIFI验证...");*/
                                     pauseWifiVerifyButton();
                                     mWifiUtil.startScanWifi();
                                 }
@@ -189,30 +180,6 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
 
         //检查签到结果
         checkSigninResult();
-        /*if (isFaceVerifyPass && isWifiVerifyPass)
-        {
-            studentSignin(mStudentObjectId, mClassroomObjectId, new StudentSigninListener()
-            {
-                @Override
-                public void succeed()
-                {
-                    setResult(RESULT_OK);
-                    finish();
-                }
-
-                @Override
-                public void failed(String info)
-                {
-                    toast("签到失败: " + info);
-                    isFaceVerifyPass = false;
-                    isWifiVerifyPass = false;
-                    mFaceVerify.setEnabled(true);
-                    mFaceVerify.setText("人脸验证");
-                    mWifiVerify.setEnabled(true);
-                    mWifiVerify.setText("WIFI验证");
-                }
-            });
-        }*/
     }
 
     //wifi扫描结束的广播接收器
@@ -227,12 +194,10 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                 if (!isWifiVerifyPass)
                 {
                     List<ScanResult> results = mWifiUtil.getScanResults();
-                    //toast(Integer.toString(results.size()));
                     for (ScanResult result : results)
                     {
                         if (result.BSSID.toLowerCase().equals(mBssid.toLowerCase()))
                         {
-                            //mWifiVerify.setText("WIFI验证通过");
                             disableWifiVerifyButton();
                             isWifiVerifyPass = true;
                             //取消注册广播
@@ -244,8 +209,6 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                     }
 
                     toast("wifi验证失败");
-                    /*mWifiVerify.setEnabled(true);
-                    mWifiVerify.setText("WIFI验证");*/
                     enableWifiVerifyButton();
                 }
             }
@@ -283,10 +246,6 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                     toast("签到失败: " + info);
                     isFaceVerifyPass = false;
                     isWifiVerifyPass = false;
-                    /*mFaceVerify.setEnabled(true);
-                    mFaceVerify.setText("人脸验证");
-                    mWifiVerify.setEnabled(true);
-                    mWifiVerify.setText("WIFI验证");*/
                     enableFaceVerifyButton();
                     enableWifiVerifyButton();
                 }
@@ -342,7 +301,6 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                                             @Override
                                             public void succeed(double similarity)
                                             {
-                                                //toast("人脸对比成功");
                                                 disableFaceVerifyButton();
                                                 isFaceVerifyPass = true;
                                                 checkSigninResult();

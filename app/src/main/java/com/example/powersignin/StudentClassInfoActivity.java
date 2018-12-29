@@ -87,7 +87,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
             {
                 if (e == null)
                 {
-                    String teacherObjectId = classroom.getTeacher().getObjectId();
                     mClassroomName = classroom.getDescription();
                     mClassroomNameTextView.setText("\t" + mClassroomName);
                     mClassroomCodeTextView.setText("\t" + mClassroomObjectId);
@@ -102,17 +101,11 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                             {
                                 if (e == null)
                                 {
-                                    /*mSigninButton.setEnabled(true);
-                                    mSigninButton.setText("点击签到");
-                                    mSigninButton.setTextColor(getColor(R.color.white));*/
                                     setSigninButtonEnable();
                                     for (Student student : list)
                                     {
                                         if (student.getObjectId().equals(mStudentObjectId))
                                         {
-                                            /*mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
-                                            mSigninButton.setEnabled(false);
-                                            mSigninButton.setText("签到成功");*/
                                             setSigninButtonSucceed();
                                             break;
                                         }
@@ -128,9 +121,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     }
                     else
                     {
-                        /*mSigninButton.setEnabled(false);
-                        mSigninButton.setText("签到尚未开始");
-                        mSigninButton.setTextColor(getColor(R.color.grey));*/
                         setSigninButtonDisable();
                     }
                 }
@@ -193,7 +183,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        //toast("否");
+
                     }
                 });
                 builder.show();
@@ -223,10 +213,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                         }
                         else
                         {
-                            //toast("签到已停止");
-                            /*mSigninButton.setEnabled(false);
-                            mSigninButton.setText("签到尚未开始");
-                            mSigninButton.setTextColor(getColor(R.color.grey));*/
                             setSigninButtonDisable();
                         }
                     }

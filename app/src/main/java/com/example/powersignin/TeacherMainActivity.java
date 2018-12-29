@@ -89,8 +89,6 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView textView = (TextView)findViewById(R.id.text_title);
         textView.setText(mTeacherNickname + "管理的班级");
-        //setToolbarTitle(mTeacherNickname + "管理的班级");
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         updateClassroomsList();
     }

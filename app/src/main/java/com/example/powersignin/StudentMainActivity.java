@@ -58,6 +58,7 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
         setContentView(R.layout.activity_student_main);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initViews()
     {
@@ -65,7 +66,7 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
         mRecyclerView = (RecyclerView)findViewById(R.id.recycler);
         mEmptyText = (TextView)findViewById(R.id.text_empty_text);
         mRefresh = (SwipeRefreshLayout)findViewById(R.id.refresh);
-        mRefresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        mRefresh.setColorSchemeColors(getColor(R.color.colorPrimary));
     }
 
     @Override
@@ -82,7 +83,6 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
         mStudentNickname = getIntent().getStringExtra(EXTRA_STUDENT_NICKNAME);
 
         setSupportActionBar(mToolbar);
-        //setToolbarTitle(mStudentNickname + "加入的班级");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView textView = (TextView)findViewById(R.id.text_title);
         textView.setText(mStudentNickname + "加入的班级");
@@ -170,8 +170,6 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
                 @Override
                 public void onClick(View v)
                 {
-                    //launchTeacherClassInfoActivity(classNameTextView.getText().toString(), classTeacher.getText().toString());
-                    //toast("进入班级详情");
                     startStudentClassInfoActivity(classroomObjectId, mStudentObjectId);
                 }
             });
@@ -202,15 +200,7 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
             final Classroom classroom = classrooms.get(position);
             holder.classNameTextView.setText(classroom.getDescription());
             holder.classTeacher.setText(classroom.getTeacherNickname());
-            //holder.classTeacher.setText(classroom.getTeacher().getNickname());
-            /*findTeacherByTeacherObjectId(classroom.getTeacher().getObjectId(), new QueryListener<Teacher>()
-            {
-                @Override
-                public void done(Teacher teacher, BmobException e)
-                {
-                    holder.classTeacher.setText(teacher.getNickname());
-                }
-            });*/
+
             if (classroom.isSignin())
             {
                 //判断是否签到成功

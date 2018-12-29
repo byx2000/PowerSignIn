@@ -43,10 +43,6 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
 
     private WifiUtil mWifiUtil;
 
-    private boolean isSignin;
-
-    //private ClassInfo classInfo;
-
     private boolean flag;
 
     public static Intent newIntent(Context context, String classroomName, String classroomObjectId)
@@ -92,7 +88,6 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
     {
         //设置Toolbar
         setSupportActionBar(mToolbar);
-        //setToolbarTitle("班级信息");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //获取班级信息
@@ -103,7 +98,6 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         mClassroomNameTextView.setText("\t" + mClassroomName);
         mClassroomCodeTextView.setText("\t" + mClassroomObjectId);
 
-        //isSignin = false;
         findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
         {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -151,16 +145,6 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         {
             case R.id.start_signin:
                 item.setEnabled(false);
-                //若Android版本大于8.0，则要打开GPS
-                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                {
-                    if (!new WifiUtil(this).isGpsOpen())
-                    {
-                        toast("请打开GPS");
-                        startGPSSettingActivity();
-                        return true;
-                    }
-                }*/
 
                 //检测当前是否处于签到状态
                 findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
@@ -174,8 +158,6 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                             //处于签到状态
                             if (classroom.isSignin())
                             {
-                                //startStartSigninActivity(mClassroomName, mClassroomObjectId, classroom.getCurrentSigninEvent());
-
                                 //停止签到
                                 setClassroomFinishSignin(mClassroomObjectId, new UpdateListener()
                                 {
@@ -231,10 +213,6 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                             {
                                                 if (e == null)
                                                 {
-                                                    //startWifiApSettingActivity();
-                                                    //startStartSigninActivity(mClassroomName, mClassroomObjectId, signinEventObjectId);
-
-                                                    //isSignin = true;
                                                     item.setTitle("停止签到");
                                                     item.setEnabled(true);
                                                     mIsSignin.setText("\t正在签到");
@@ -290,27 +268,6 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        //删除班级
-                        /*deleteClassroom(mClassroomObjectId, new UpdateListener()
-                        {
-                            @Override
-                            public void done(BmobException e)
-                            {
-                                //删除成功
-                                if (e == null)
-                                {
-                                    toast("删除成功");
-                                    setResult(RESULT_OK);
-                                    finish();
-                                }
-                                //删除失败
-                                else
-                                {
-                                    toast("删除失败: " + e.getMessage());
-                                }
-                            }
-                        });*/
-
                         deleteClassroom(mClassroomObjectId, new DeleteClassroomListener()
                         {
                             @Override
