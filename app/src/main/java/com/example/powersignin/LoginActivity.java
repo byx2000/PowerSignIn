@@ -1,6 +1,8 @@
 package com.example.powersignin;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +20,6 @@ import java.util.List;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener
 {
-    private Toolbar mToolbar;
     private EditText mUsernameEditText;
     private EditText mPasswordEditText;
     private Button mLoginButton;
@@ -39,7 +40,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initViews()
     {
-        //mToolbar = (Toolbar)findViewById(R.id.toolbar_login_activity);
         mUsernameEditText = (EditText)findViewById(R.id.edit_username);
         mPasswordEditText = (EditText)findViewById(R.id.edit_password);
         mLoginButton = (Button)findViewById(R.id.btn_login);
@@ -56,18 +56,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initData()
     {
-        //setSupportActionBar(mToolbar);
-        //setToolbarTitle("登陆");
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v)
     {
         //登陆
         if (v == mLoginButton)
         {
-            mLoginButton.setEnabled(false);
-            mLoginButton.setText("正在登陆...");
+            /*mLoginButton.setEnabled(false);
+            mLoginButton.setText("正在登陆...");*/
+            disableLoginButton();
 
             final String username = mUsernameEditText.getText().toString();
             final String password = mPasswordEditText.getText().toString();
@@ -95,7 +96,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                             }
                         });
 
-                        //toast("登陆成功: " + user.getNickname() + " " + user.getType());
                         //用户类型为教师
                         if (user.getType().equals("teacher"))
                         {
@@ -108,7 +108,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                                     //查找成功
                                     if (e == null)
                                     {
-                                        //Log.d("TAG", user.getNickname());
                                         //打开教师主页
                                         startTeacherMainActivity(user.getUsername(), list.get(0).getObjectId(), user.getNickname());
                                         finish();
@@ -150,8 +149,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                     else
                     {
                         toast("登陆失败: " + e.getMessage());
-                        mLoginButton.setEnabled(true);
-                        mLoginButton.setText("登陆");
+                        //mLoginButton.setEnabled(true);
+                        //mLoginButton.setText("登陆");
+                        enableLoginButton();
                     }
                 }
             });
@@ -161,5 +161,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         {
             startSignupActivity();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void disableLoginButton()
+    {
+        mLoginButton.setEnabled(false);
+        mLoginButton.setTextColor(getColor(R.color.grey));
+        mLoginButton.setText("正在登陆...");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void enableLoginButton()
+    {
+        mLoginButton.setEnabled(true);
+        mLoginButton.setTextColor(getColor(R.color.white));
+        mLoginButton.setText("登陆");
     }
 }

@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +22,6 @@ import java.io.IOException;
 
 public class SignupActivity extends BaseActivity implements View.OnClickListener
 {
-    private Toolbar mToolbar;
     private EditText mUsernameEditText;
     private EditText mPasswordEditText;
     private EditText mNicknameEditText;
@@ -51,7 +50,6 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initViews()
     {
-        //mToolbar = (Toolbar)findViewById(R.id.toolbar_signup_activity);
         mUsernameEditText = (EditText)findViewById(R.id.edit_username);
         mPasswordEditText = (EditText)findViewById(R.id.edit_password);
         mNicknameEditText = (EditText)findViewById(R.id.edit_nickname);
@@ -59,8 +57,6 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         mStudentRadioButton = (RadioButton)findViewById(R.id.radio_student);
         mSignupButton = (Button)findViewById(R.id.btn_signup);
         mFaceImage = (ImageView)findViewById(R.id.img_face_photo);
-
-        //Glide.with(this).load(R.drawable.empty).into(mFaceImage);
     }
 
     @Override
@@ -73,8 +69,6 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initData()
     {
-        //setSupportActionBar(mToolbar);
-        //setToolbarTitle("注册");
         mStudentRadioButton.setChecked(true);
         hasFacePhoto = false;
 
@@ -103,6 +97,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v)
     {
@@ -115,8 +110,6 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
             }
             else
             {
-                //mSignupButton.setEnabled(false);
-                //mSignupButton.setText("正在注册...");
                 disableSignupButton();
 
                 final String username = mUsernameEditText.getText().toString();
@@ -173,6 +166,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
                 final File finalCompressFile = compressFile;
                 FaceUtil.faceDetect(compressFile.getPath(), new FaceUtil.FaceDetectListener()
                 {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void succeed(boolean hasFace)
                     {
@@ -207,6 +201,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
                     }
 
                     //检测失败
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void failed(String info)
                     {
@@ -219,30 +214,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         //拍摄脸部照片
         else if (v == mFaceImage)
         {
-            //开启摄像机
-            /*mImageFile = new File(getExternalCacheDir(), "face.jpg");
-            if (mImageFile.exists())
-            {
-                mImageFile.delete();
-            }
-            try
-            {
-                mImageFile.createNewFile();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-
-            if (Build.VERSION.SDK_INT >= 24)
-            {
-                mImageUri = FileProvider.getUriForFile(SignupActivity.this, "com.example.powersignin.fileprovider", mImageFile);
-            }
-            else
-            {
-                mImageUri = Uri.fromFile(mImageFile);
-            }*/
-
+            //打开相机
             startCameraActivity(mImageUri);
         }
     }
@@ -260,15 +232,19 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void enableSignupButton()
     {
         mSignupButton.setEnabled(true);
+        mSignupButton.setTextColor(getColor(R.color.white));
         mSignupButton.setText("注册");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void disableSignupButton()
     {
         mSignupButton.setEnabled(false);
+        mSignupButton.setTextColor(getColor(R.color.grey));
         mSignupButton.setText("正在注册...");
     }
 }

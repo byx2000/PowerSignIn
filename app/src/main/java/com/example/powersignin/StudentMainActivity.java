@@ -14,10 +14,8 @@ import android.view.*;
 import android.widget.TextView;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.QueryListener;
 import com.example.powersignin.bean.Classroom;
 import com.example.powersignin.bean.Student;
-import com.example.powersignin.bean.Teacher;
 
 import java.util.List;
 
