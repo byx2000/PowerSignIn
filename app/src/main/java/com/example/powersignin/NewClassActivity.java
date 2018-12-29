@@ -2,7 +2,9 @@ package com.example.powersignin;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +19,7 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
 
     private Toolbar newClassActivityToolbar;
     private EditText classroomDescriptionTextView;
-    private Button createClassroomButton;
+    private Button mNewClass;
 
     private String teacherObjectId;
 
@@ -45,13 +47,13 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
     {
         newClassActivityToolbar = (Toolbar)findViewById(R.id.toolbar_new_class_activity);
         classroomDescriptionTextView = (EditText)findViewById(R.id.edit_new_class_description);
-        createClassroomButton = (Button)findViewById(R.id.btn_new_classroom);
+        mNewClass = (Button)findViewById(R.id.btn_new_classroom);
     }
 
     @Override
     protected void initListeners()
     {
-        createClassroomButton.setOnClickListener(this);
+        mNewClass.setOnClickListener(this);
     }
 
     @Override
@@ -60,11 +62,11 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
         //设置Toolbar
         setSupportActionBar(newClassActivityToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //setToolbarTitle("新建班级");
 
         teacherObjectId = getIntent().getStringExtra(EXTRA_TEACHER_OBJECTID);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v)
     {
@@ -76,8 +78,9 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
             return;
         }
 
-        createClassroomButton.setEnabled(false);
-        createClassroomButton.setText("正在创建...");
+        //mNewClass.setEnabled(false);
+        //mNewClass.setText("正在创建...");
+        disableNewClassButton();
 
         findTeacherByTeacherObjectId(teacherObjectId, new QueryListener<Teacher>()
         {
@@ -100,16 +103,34 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
                         public void failed(String info)
                         {
                             toast("班级创建失败: " + info);
-                            createClassroomButton.setEnabled(true);
-                            createClassroomButton.setText("创建班级");
+                            //mNewClass.setEnabled(true);
+                            //mNewClass.setText("创建班级");
+                            enableNewClassButton();
                         }
                     });
                 }
                 else
                 {
                     toast("创建班级失败，请重试");
+                    enableNewClassButton();
                 }
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void disableNewClassButton()
+    {
+        mNewClass.setEnabled(false);
+        mNewClass.setTextColor(getColor(R.color.grey));
+        mNewClass.setText("正在创建...");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void enableNewClassButton()
+    {
+        mNewClass.setEnabled(true);
+        mNewClass.setTextColor(getColor(R.color.white));
+        mNewClass.setText("创建班级");
     }
 }

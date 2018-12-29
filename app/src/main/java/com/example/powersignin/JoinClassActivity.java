@@ -2,7 +2,9 @@ package com.example.powersignin;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -55,17 +57,18 @@ public class JoinClassActivity extends BaseActivity implements View.OnClickListe
     protected void initData()
     {
         setSupportActionBar(mToolbar);
-        //setToolbarTitle("加入班级");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mStudentObjectId = getIntent().getStringExtra(EXTRA_STUDENT_OBJECTID);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v)
     {
-        mJoinClassButton.setEnabled(false);
-        mJoinClassButton.setText("正在加入...");
+        //mJoinClassButton.setEnabled(false);
+        //mJoinClassButton.setText("正在加入...");
+        disableJoinClassButton();
 
         String classroomObjectId = mClassCodeEditText.getText().toString();
         joinClassroom(mStudentObjectId, classroomObjectId, new JoinClassroomListener()
@@ -82,9 +85,26 @@ public class JoinClassActivity extends BaseActivity implements View.OnClickListe
             public void failed(String info)
             {
                 toast("加入班级失败: " + info);
-                mJoinClassButton.setEnabled(true);
-                mJoinClassButton.setText("加入班级");
+                //mJoinClassButton.setEnabled(true);
+                //mJoinClassButton.setText("加入班级");
+                enableJoinClassButton();
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void disableJoinClassButton()
+    {
+        mJoinClassButton.setEnabled(false);
+        mJoinClassButton.setTextColor(getColor(R.color.grey));
+        mJoinClassButton.setText("正在加入...");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void enableJoinClassButton()
+    {
+        mJoinClassButton.setEnabled(true);
+        mJoinClassButton.setTextColor(getColor(R.color.white));
+        mJoinClassButton.setText("加入班级");
     }
 }

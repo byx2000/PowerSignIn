@@ -187,8 +187,9 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
                                 public void failed(String info)
                                 {
                                     toast("注册失败: " + info);
-                                    mSignupButton.setEnabled(true);
-                                    mSignupButton.setText("注册");
+                                    //mSignupButton.setEnabled(true);
+                                    //mSignupButton.setText("注册");
+                                    enableSignupButton();
                                 }
                             });
                         }
