@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import com.example.powersignin.bean.Classroom;
 import com.example.powersignin.bean.Student;
-import com.example.powersignin.bean.Teacher;
 
 import java.util.List;
 
@@ -136,7 +134,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     {
                         mSigninButton.setEnabled(false);
                         mSigninButton.setText("签到尚未开始");
-                        mSigninButton.setTextColor(getColor(R.color.colorUnactive));
+                        mSigninButton.setTextColor(getColor(R.color.grey));
                     }
                 }
                 else
@@ -282,7 +280,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                             toast("签到已停止");
                             mSigninButton.setEnabled(false);
                             mSigninButton.setText("签到尚未开始");
-                            mSigninButton.setTextColor(getColor(R.color.colorUnactive));
+                            mSigninButton.setTextColor(getColor(R.color.grey));
                         }
                     }
                 }

@@ -9,8 +9,9 @@
 
         <TextView
                 android:layout_margin="16dp"
-                android:textSize="20sp"
+                style="@style/CustomTextView"
                 android:id="@+id/text_students"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

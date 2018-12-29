@@ -9,6 +9,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -82,7 +83,8 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        setToolbarTitle("签到");
+        //setToolbarTitle("签到");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         mFaceVerify = (Button)findViewById(R.id.btn_face_verify);
         mWifiVerify = (Button)findViewById(R.id.btn_wifi_verify);
     }
@@ -162,6 +164,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                     {
                         findSigninEvent(classroom.getCurrentSigninEvent(), new QueryListener<SigninEvent>()
                         {
+                            @RequiresApi(api = Build.VERSION_CODES.M)
                             @Override
                             public void done(SigninEvent signinEvent, BmobException e)
                             {
@@ -169,8 +172,9 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                                 {
                                     mBssid = signinEvent.getBssid();
                                     //toast(mBssid);
-                                    mWifiVerify.setEnabled(false);
-                                    mWifiVerify.setText("正在进行WIFI验证...");
+                                    /*mWifiVerify.setEnabled(false);
+                                    mWifiVerify.setText("正在进行WIFI验证...");*/
+                                    pauseWifiVerifyButton();
                                     mWifiUtil.startScanWifi();
                                 }
                             }
@@ -211,30 +215,36 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     //wifi扫描结束的广播接收器
     private class WifiBroadcastReceiver extends BroadcastReceiver
     {
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onReceive(Context context, Intent intent)
         {
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
             {
-                List<ScanResult> results = mWifiUtil.getScanResults();
-                //toast(Integer.toString(results.size()));
-                for (ScanResult result : results)
+                if (!isWifiVerifyPass)
                 {
-                    if (result.BSSID.toLowerCase().equals(mBssid.toLowerCase()))
+                    List<ScanResult> results = mWifiUtil.getScanResults();
+                    //toast(Integer.toString(results.size()));
+                    for (ScanResult result : results)
                     {
-                        mWifiVerify.setText("WIFI验证通过");
-                        isWifiVerifyPass = true;
-                        //取消注册广播
-                        unregisterReceiver(mWifiBroadcastReceiver);
-                        //检查签到结果
-                        checkSigninResult();
-                        return;
+                        if (result.BSSID.toLowerCase().equals(mBssid.toLowerCase()))
+                        {
+                            //mWifiVerify.setText("WIFI验证通过");
+                            disableWifiVerifyButton();
+                            isWifiVerifyPass = true;
+                            //取消注册广播
+                            unregisterReceiver(mWifiBroadcastReceiver);
+                            //检查签到结果
+                            checkSigninResult();
+                            return;
+                        }
                     }
-                }
 
-                toast("wifi验证失败");
-                mWifiVerify.setEnabled(true);
-                mWifiVerify.setText("WIFI验证");
+                    toast("wifi验证失败");
+                    /*mWifiVerify.setEnabled(true);
+                    mWifiVerify.setText("WIFI验证");*/
+                    enableWifiVerifyButton();
+                }
             }
         }
     }
@@ -263,21 +273,25 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                     finish();
                 }
 
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void failed(String info)
                 {
                     toast("签到失败: " + info);
                     isFaceVerifyPass = false;
                     isWifiVerifyPass = false;
-                    mFaceVerify.setEnabled(true);
+                    /*mFaceVerify.setEnabled(true);
                     mFaceVerify.setText("人脸验证");
                     mWifiVerify.setEnabled(true);
-                    mWifiVerify.setText("WIFI验证");
+                    mWifiVerify.setText("WIFI验证");*/
+                    enableFaceVerifyButton();
+                    enableWifiVerifyButton();
                 }
             });
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -312,6 +326,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                         {
                             downloadFile(new File(getExternalCacheDir(), "signined_face.jpg"), student.getFaceImageUrl(), new DownloadFileListener()
                             {
+                                @RequiresApi(api = Build.VERSION_CODES.M)
                                 @Override
                                 public void done(String s, BmobException e)
                                 {
@@ -320,6 +335,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                                         //人脸对比
                                         FaceUtil.faceMatch(s, finalMCurrentFace.getPath(), new FaceUtil.FaceMatchListener()
                                         {
+                                            @RequiresApi(api = Build.VERSION_CODES.M)
                                             @Override
                                             public void succeed(double similarity)
                                             {
@@ -329,6 +345,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                                                 checkSigninResult();
                                             }
 
+                                            @RequiresApi(api = Build.VERSION_CODES.M)
                                             @Override
                                             public void failed(String info)
                                             {
@@ -365,21 +382,53 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void pauseFaceVerifyButton()
     {
         mFaceVerify.setEnabled(false);
+        mFaceVerify.setTextColor(getColor(R.color.grey));
         mFaceVerify.setText("正在进行人脸验证...");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void disableFaceVerifyButton()
     {
         mFaceVerify.setEnabled(false);
+        mFaceVerify.setTextColor(getColor(R.color.white));
+        mFaceVerify.setBackground(getDrawable(R.drawable.button_ok));
         mFaceVerify.setText("人脸验证通过");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void enableFaceVerifyButton()
     {
         mFaceVerify.setEnabled(true);
+        mFaceVerify.setTextColor(getColor(R.color.white));
         mFaceVerify.setText("人脸验证");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void pauseWifiVerifyButton()
+    {
+        mWifiVerify.setEnabled(false);
+        mWifiVerify.setTextColor(getColor(R.color.grey));
+        mWifiVerify.setText("正在进行wifi验证...");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void disableWifiVerifyButton()
+    {
+        mWifiVerify.setEnabled(false);
+        mWifiVerify.setTextColor(getColor(R.color.white));
+        mWifiVerify.setBackground(getDrawable(R.drawable.button_ok));
+        mWifiVerify.setText("wifi验证通过");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void enableWifiVerifyButton()
+    {
+        mWifiVerify.setEnabled(true);
+        mWifiVerify.setTextColor(getColor(R.color.white));
+        mWifiVerify.setText("wifi验证");
     }
 }

@@ -51,21 +51,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="缺签的学生"
-            style="?android:listSeparatorTextViewStyle"/>
+            style="@style/CustomTextView"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"/>
 
-    <LinearLayout
+    <TextView
+            android:background="@drawable/radius_bg"
+            android:id="@+id/text_absent"
+            style="@style/CustomTextView"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="16dp">
-
-        <TextView
-                android:id="@+id/text_absent"
-                android:textSize="20sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"/>
 
 </LinearLayout>
 

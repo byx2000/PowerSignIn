@@ -5,7 +5,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
-
+<!--
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -14,19 +14,53 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_scrollFlags="scroll|enterAlways|snap" />
+-->
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways|snap" >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:layout_width="35dip"
+                    android:layout_height="35dip"
+                    android:src="@drawable/check"/>
+
+            <TextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="签到"
+                    android:textColor="#000000"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
 
     <Button
             android:id="@+id/btn_face_verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="人脸验证"
-            android:layout_margin="16dp"/>
+            style="@style/CustomButton"
+            android:layout_margin="20dp"/>
 
     <Button
             android:id="@+id/btn_wifi_verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="wifi验证"
-            android:layout_margin="16dp"/>
+            style="@style/CustomButton"
+            android:layout_margin="20dp"/>
 
 </LinearLayout>

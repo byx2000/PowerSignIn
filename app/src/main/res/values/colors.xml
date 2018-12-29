@@ -9,7 +9,8 @@
     <color name="colorBackground">#eeeeee</color>
     <color name="colorEmphasis">#e91e63</color>
     <color name="colorIgnore">#90a4ae</color>
-    <color name="colorUnactive">#bdbdbd</color>
+    <color name="dark_grey">#9e9e9e</color>
+    <color name="grey">#bdbdbd</color>
     <color name="white">#ffffff</color>
     <color name="green">#0a8f08</color>
     <color name="red">#e91e63</color>
