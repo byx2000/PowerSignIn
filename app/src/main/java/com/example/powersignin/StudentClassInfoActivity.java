@@ -34,7 +34,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
 
     private String mClassroomObjectId;
     private String mClassroomName;
-    private String mClassroomTeacher;
     private String mStudentObjectId;
 
     public static Intent newIntent(Context context, String classroomObjectId, String studentObjectId)
@@ -64,14 +63,12 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         mClassroomNameTextView = (TextView)findViewById(R.id.text_class_name);
         mClassroomCodeTextView = (TextView)findViewById(R.id.text_code);
         mClassroomTeacherTextView = (TextView)findViewById(R.id.text_class_teacher);
-        //mViewStudentsButton = (Button)findViewById(R.id.btn_students);
         mSigninButton = (Button)findViewById(R.id.btn_signin);
     }
 
     @Override
     protected void initListeners()
     {
-        //mViewStudentsButton.setOnClickListener(this);
         mSigninButton.setOnClickListener(this);
     }
 
@@ -79,7 +76,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     protected void initData()
     {
         setSupportActionBar(mToolbar);
-        //setToolbarTitle("班级信息");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mClassroomObjectId = getIntent().getStringExtra(EXTRA_CLASSROOM_OBJECTID);
@@ -98,8 +94,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     mClassroomTeacherTextView.setText("\t" + classroom.getTeacherNickname());
                     if (classroom.isSignin())
                     {
-                        //mSigninButton.setEnabled(true);
-                        //mSigninButton.setText("点击签到");
                         //查找学生是否已签到
                         findSigninedStudents(classroom.getCurrentSigninEvent(), new FindListener<Student>()
                         {
@@ -108,16 +102,18 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                             {
                                 if (e == null)
                                 {
-                                    mSigninButton.setEnabled(true);
+                                    /*mSigninButton.setEnabled(true);
                                     mSigninButton.setText("点击签到");
-                                    mSigninButton.setTextColor(getColor(R.color.white));
+                                    mSigninButton.setTextColor(getColor(R.color.white));*/
+                                    setSigninButtonEnable();
                                     for (Student student : list)
                                     {
                                         if (student.getObjectId().equals(mStudentObjectId))
                                         {
-                                            mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
+                                            /*mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
                                             mSigninButton.setEnabled(false);
-                                            mSigninButton.setText("签到成功");
+                                            mSigninButton.setText("签到成功");*/
+                                            setSigninButtonSucceed();
                                             break;
                                         }
                                     }
@@ -132,9 +128,10 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     }
                     else
                     {
-                        mSigninButton.setEnabled(false);
+                        /*mSigninButton.setEnabled(false);
                         mSigninButton.setText("签到尚未开始");
-                        mSigninButton.setTextColor(getColor(R.color.grey));
+                        mSigninButton.setTextColor(getColor(R.color.grey));*/
+                        setSigninButtonDisable();
                     }
                 }
                 else
@@ -209,57 +206,6 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     @Override
     public void onClick(View v)
     {
-        //查看同班同学
-        /*if (v == mViewStudentsButton)
-        {
-            //查找该班级的所有学生
-            findClassroomStudents(mClassroomObjectId, new FindListener<Student>()
-            {
-                @Override
-                public void done(List<Student> list, BmobException e)
-                {
-                    //查找成功
-                    if (e == null)
-                    {
-                        //设置对话框布局
-                        View view = LayoutInflater.from(StudentClassInfoActivity.this).inflate(R.layout.dialog_classroom_students, null, false);
-                        final TextView studentsTextView = view.findViewById(R.id.text_students);
-
-                        //显示学生昵称
-                        String s = "";
-                        for (int i = 0; i < list.size(); ++i)
-                        {
-                            if (i != 0)
-                            {
-                                s += '\n';
-                            }
-                            s += list.get(i).getNickname();
-
-                        }
-                        studentsTextView.setText(s);
-
-                        //打开学生列表对话框
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(StudentClassInfoActivity.this);
-                        builder.setIcon(R.drawable.ic_launcher_foreground);
-                        builder.setView(view);
-                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-
-                            }
-                        });
-                        builder.show();
-                    }
-                    //查找失败
-                    else
-                    {
-                        toast("查找学生信息失败: " + e.getMessage());
-                    }
-                }
-            });
-        }*/
         //进入签到页面
         if (v == mSigninButton)
         {
@@ -277,10 +223,11 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                         }
                         else
                         {
-                            toast("签到已停止");
-                            mSigninButton.setEnabled(false);
+                            //toast("签到已停止");
+                            /*mSigninButton.setEnabled(false);
                             mSigninButton.setText("签到尚未开始");
-                            mSigninButton.setTextColor(getColor(R.color.grey));
+                            mSigninButton.setTextColor(getColor(R.color.grey));*/
+                            setSigninButtonDisable();
                         }
                     }
                 }
@@ -306,5 +253,30 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                 toast("签到失败");
             }
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void setSigninButtonEnable()
+    {
+        mSigninButton.setEnabled(true);
+        mSigninButton.setText("点击签到");
+        mSigninButton.setTextColor(getColor(R.color.white));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void setSigninButtonDisable()
+    {
+        mSigninButton.setEnabled(false);
+        mSigninButton.setText("签到尚未开始");
+        mSigninButton.setTextColor(getColor(R.color.grey));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void setSigninButtonSucceed()
+    {
+        mSigninButton.setEnabled(false);
+        mSigninButton.setText("签到成功");
+        mSigninButton.setTextColor(getColor(R.color.white));
+        mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
     }
 }

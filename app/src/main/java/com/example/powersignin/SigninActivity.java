@@ -107,6 +107,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
         mWifiUtil = new WifiUtil(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v)
     {
@@ -116,6 +117,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
             /*isFaceVerifyPass = true;
             mFaceVerify.setEnabled(false);
             mFaceVerify.setText("人脸验证已通过");*/
+            pauseFaceVerifyButton();
 
             isFaceVerifyPass = false;
 
@@ -147,6 +149,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
         //wifi验证
         else if (v == mWifiVerify)
         {
+            pauseWifiVerifyButton();
             //isWifiVerifyPass = true;
             //mWifiVerify.setEnabled(false);
             //mWifiVerify.setText("WIFI验证已通过");
@@ -371,13 +374,15 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
                         else
                         {
                             toast("人脸验证失败: " + e.getMessage());
+                            enableFaceVerifyButton();
                         }
                     }
                 });
             }
             else
             {
-                toast("failed");
+                toast("人脸验证失败");
+                enableFaceVerifyButton();
             }
         }
     }
