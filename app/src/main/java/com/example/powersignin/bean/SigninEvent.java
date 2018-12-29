@@ -14,6 +14,9 @@ public class SigninEvent extends BmobObject
     //教师机的bssid
     private String bssid;
 
+    //缺席学生的数量
+    private String absentStudentsCount;
+
     public Classroom getClassroom()
     {
         return classroom;
@@ -42,5 +45,15 @@ public class SigninEvent extends BmobObject
     public void setBssid(String bssid)
     {
         this.bssid = bssid;
+    }
+
+    public String getAbsentStudentsCount()
+    {
+        return absentStudentsCount;
+    }
+
+    public void setAbsentStudentsCount(String absentStudentsCount)
+    {
+        this.absentStudentsCount = absentStudentsCount;
     }
 }

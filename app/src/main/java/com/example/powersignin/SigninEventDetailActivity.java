@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
+import com.example.powersignin.bean.SigninEvent;
 import com.example.powersignin.bean.Student;
 
 import java.util.List;
@@ -87,6 +90,18 @@ public class SigninEventDetailActivity extends BaseActivity
                 }
 
                 mAbsent.setText(s);
+
+                SigninEvent event = new SigninEvent();
+                event.setObjectId(mSigninEventObjectId);
+                event.setAbsentStudentsCount(Integer.toString(students.size()));
+                event.update(new UpdateListener()
+                {
+                    @Override
+                    public void done(BmobException e)
+                    {
+
+                    }
+                });
             }
 
             @Override

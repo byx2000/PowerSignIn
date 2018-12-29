@@ -111,6 +111,7 @@ public class SigninHistoryActivity extends BaseActivity
     {
         public TextView mBeginTime;
         public TextView mEndTime;
+        public TextView mCount;
         public int index;
 
         public ViewHolder(View itemView)
@@ -118,6 +119,7 @@ public class SigninHistoryActivity extends BaseActivity
             super(itemView);
             mBeginTime = (TextView)itemView.findViewById(R.id.text_begin_time);
             mEndTime = (TextView)itemView.findViewById(R.id.text_end_time);
+            mCount = (TextView)itemView.findViewById(R.id.text_count);
 
             CardView cardView = (CardView)itemView.findViewById(R.id.card_view);
             cardView.setOnClickListener(new View.OnClickListener()
@@ -155,6 +157,16 @@ public class SigninHistoryActivity extends BaseActivity
             SigninEvent event = events.get(position);
             holder.mBeginTime.setText(event.getCreatedAt());
             holder.mEndTime.setText(event.getUpdatedAt());
+            String count = event.getAbsentStudentsCount();
+            if (count.equals("-1"))
+            {
+                holder.mCount.setText("未知");
+            }
+            else
+            {
+                holder.mCount.setText(count);
+            }
+
             holder.index = position;
         }
 
