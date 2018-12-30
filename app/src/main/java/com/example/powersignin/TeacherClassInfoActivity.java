@@ -1,6 +1,7 @@
 package com.example.powersignin;
 
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
     private TextView mClassroomNameTextView;
     private TextView mClassroomCodeTextView;
     private TextView mIsSignin;
+    private TextView mPrompt;
     private Button mViewStudentButton;
     private Button mViewSigninHistory;
     private Menu mMenu;
@@ -78,6 +80,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         mViewStudentButton = (Button)findViewById(R.id.btn_view_student_info);
         mViewSigninHistory = (Button)findViewById(R.id.btn_sign_in_history);
         mIsSignin = (TextView)findViewById(R.id.text_issignin);
+        mPrompt = (TextView)findViewById(R.id.text_prompt);
     }
 
     @Override
@@ -85,6 +88,8 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
     {
         mViewStudentButton.setOnClickListener(this);
         mViewSigninHistory.setOnClickListener(this);
+        mClassroomCodeTextView.setOnClickListener(this);
+        mPrompt.setOnClickListener(this);
     }
 
     @Override
@@ -375,6 +380,13 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         else if (v == mViewSigninHistory)
         {
             startSigninHistoryActivity(mClassroomObjectId);
+        }
+        //点击复制班级邀请码
+        else if (v == mClassroomCodeTextView || v == mPrompt)
+        {
+            ClipboardManager clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+            clip.setText(mClassroomCodeTextView.getText().toString().trim());
+            toast("已复制到剪切板");
         }
     }
 

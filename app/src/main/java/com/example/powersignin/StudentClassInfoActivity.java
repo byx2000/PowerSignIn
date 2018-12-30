@@ -1,6 +1,7 @@
 package com.example.powersignin;
 
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     private TextView mClassroomNameTextView;
     private TextView mClassroomCodeTextView;
     private TextView mClassroomTeacherTextView;
+    private TextView mPrompt;
     private Button mSigninButton;
     private SwipeRefreshLayout mRefresh;
     private int mPosition;
@@ -72,6 +74,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         mSigninButton = (Button)findViewById(R.id.btn_signin);
         mRefresh = (SwipeRefreshLayout)findViewById(R.id.refresh);
         mRefresh.setColorSchemeColors(getColor(R.color.colorPrimary));
+        mPrompt = (TextView)findViewById(R.id.text_prompt);
     }
 
     @Override
@@ -79,6 +82,8 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     {
         mSigninButton.setOnClickListener(this);
         mRefresh.setOnRefreshListener(this);
+        mClassroomCodeTextView.setOnClickListener(this);
+        mPrompt.setOnClickListener(this);
     }
 
     @Override
@@ -233,6 +238,13 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     }
                 }
             });
+        }
+        //点击复制班级邀请码
+        else if (v== mClassroomCodeTextView || v == mPrompt)
+        {
+            ClipboardManager clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+            clip.setText(mClassroomCodeTextView.getText().toString().trim());
+            toast("已复制到剪切板");
         }
     }
 
