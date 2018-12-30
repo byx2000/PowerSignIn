@@ -288,6 +288,12 @@ public abstract class BaseActivity extends AppCompatActivity
         startActivityForResult(intent, REQUEST_SYSTEM_WIFIAP_SETTING);
     }
 
+    protected void startImageActivity(String imagePath)
+    {
+        Intent intent = ImageActivity.newIntent(this, imagePath);
+        startActivity(intent);
+    }
+
     //后端数据操作
 
     protected interface SignupListener

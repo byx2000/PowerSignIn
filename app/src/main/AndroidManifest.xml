@@ -113,6 +113,8 @@
         </activity>
         <activity android:name=".SigninEventDetailActivity">
         </activity>
+        <activity android:name=".ImageActivity">
+        </activity>
     </application>
 
 </manifest>

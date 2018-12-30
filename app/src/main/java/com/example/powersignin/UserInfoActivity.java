@@ -79,6 +79,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     protected void initListeners()
     {
         mLogoutButton.setOnClickListener(this);
+        mFaceImage.setOnClickListener(this);
     }
 
     @Override
@@ -196,61 +197,52 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v)
     {
-        //弹出对话框
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.warning);
-        builder.setTitle("退出登陆");
-        builder.setMessage("确定要退出登陆吗?\n退出登陆将会清空您的登陆信息");
-        builder.setPositiveButton("是", new DialogInterface.OnClickListener()
+        //退出登陆按钮
+        if (v == mLogoutButton)
         {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
+            //弹出对话框
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setIcon(R.drawable.warning);
+            builder.setTitle("退出登陆");
+            builder.setMessage("确定要退出登陆吗?\n退出登陆将会清空您的登陆信息");
+            builder.setPositiveButton("是", new DialogInterface.OnClickListener()
             {
-                //退出登陆
-                FileUtil.save(UserInfoActivity.this, "", "login", new FileUtil.SaveFileListener()
+                @Override
+                public void onClick(DialogInterface dialog, int which)
                 {
-                    @Override
-                    public void succeed()
+                    //退出登陆
+                    FileUtil.save(UserInfoActivity.this, "", "login", new FileUtil.SaveFileListener()
                     {
-                        logout();
-                        ActivityCollector.finishAll();
-                        startLoginActivity();
-                    }
+                        @Override
+                        public void succeed()
+                        {
+                            logout();
+                            ActivityCollector.finishAll();
+                            startLoginActivity();
+                        }
 
-                    @Override
-                    public void failed(String info)
-                    {
-                        toast("退出登陆失败，请重试");
-                    }
-                });
-            }
-        });
-        builder.setNegativeButton("否", new DialogInterface.OnClickListener()
+                        @Override
+                        public void failed(String info)
+                        {
+                            toast("退出登陆失败，请重试");
+                        }
+                    });
+                }
+            });
+            builder.setNegativeButton("否", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+
+                }
+            });
+            builder.show();
+        }
+        //查看面部照片
+        else if (v == mFaceImage)
         {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-
-            }
-        });
-        builder.show();
-
-        //清空本地缓存
-        /*FileUtil.save(this, "", "login", new FileUtil.SaveFileListener()
-        {
-            @Override
-            public void succeed()
-            {
-                logout();
-                ActivityCollector.finishAll();
-                startLoginActivity();
-            }
-
-            @Override
-            public void failed(String info)
-            {
-                toast("退出登陆失败，请重试");
-            }
-        });*/
+            startImageActivity(new File(getExternalCacheDir() + "face.jpg").getPath());
+        }
     }
 }
