@@ -237,7 +237,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     private void enableSignupButton()
     {
         mSignupButton.setEnabled(true);
-        mSignupButton.setTextColor(getColor(R.color.white));
+        mSignupButton.setTextColor(getResources().getColor(R.color.white));
         mSignupButton.setText("注册");
     }
 
@@ -245,7 +245,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     private void disableSignupButton()
     {
         mSignupButton.setEnabled(false);
-        mSignupButton.setTextColor(getColor(R.color.grey));
+        mSignupButton.setTextColor(getResources().getColor(R.color.grey));
         mSignupButton.setText("正在注册...");
     }
 }

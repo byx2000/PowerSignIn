@@ -118,12 +118,12 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                     if (classroom.isSignin())
                     {
                         mIsSignin.setText("\t正在签到");
-                        mIsSignin.setTextColor(getColor(R.color.colorEmphasis));
+                        mIsSignin.setTextColor(getResources().getColor(R.color.colorEmphasis));
                     }
                     else
                     {
                         mIsSignin.setText("\t未在签到");
-                        mIsSignin.setTextColor(getColor(R.color.colorIgnore));
+                        mIsSignin.setTextColor(getResources().getColor(R.color.colorIgnore));
                     }
                 }
                 else
@@ -181,7 +181,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                             item.setTitle("发起签到");
                                             item.setEnabled(true);
                                             mIsSignin.setText("\t未在签到");
-                                            mIsSignin.setTextColor(getColor(R.color.colorIgnore));
+                                            mIsSignin.setTextColor(getResources().getColor(R.color.colorIgnore));
                                             flag = false;
                                             if (mWifiUtil.isHotspotOpen())
                                             {
@@ -227,7 +227,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                                                     item.setTitle("停止签到");
                                                     item.setEnabled(true);
                                                     mIsSignin.setText("\t正在签到");
-                                                    mIsSignin.setTextColor(getColor(R.color.colorEmphasis));
+                                                    mIsSignin.setTextColor(getResources().getColor(R.color.colorEmphasis));
 
                                                     flag = true;
 

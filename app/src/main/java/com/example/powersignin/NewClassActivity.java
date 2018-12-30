@@ -122,7 +122,7 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
     private void disableNewClassButton()
     {
         mNewClass.setEnabled(false);
-        mNewClass.setTextColor(getColor(R.color.grey));
+        mNewClass.setTextColor(getResources().getColor(R.color.grey));
         mNewClass.setText("正在创建...");
     }
 
@@ -130,7 +130,7 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
     private void enableNewClassButton()
     {
         mNewClass.setEnabled(true);
-        mNewClass.setTextColor(getColor(R.color.white));
+        mNewClass.setTextColor(getResources().getColor(R.color.white));
         mNewClass.setText("创建班级");
     }
 }

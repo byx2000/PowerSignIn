@@ -96,7 +96,7 @@ public class JoinClassActivity extends BaseActivity implements View.OnClickListe
     private void disableJoinClassButton()
     {
         mJoinClassButton.setEnabled(false);
-        mJoinClassButton.setTextColor(getColor(R.color.grey));
+        mJoinClassButton.setTextColor(getResources().getColor(R.color.grey));
         mJoinClassButton.setText("正在加入...");
     }
 
@@ -104,7 +104,7 @@ public class JoinClassActivity extends BaseActivity implements View.OnClickListe
     private void enableJoinClassButton()
     {
         mJoinClassButton.setEnabled(true);
-        mJoinClassButton.setTextColor(getColor(R.color.white));
+        mJoinClassButton.setTextColor(getResources().getColor(R.color.white));
         mJoinClassButton.setText("加入班级");
     }
 }

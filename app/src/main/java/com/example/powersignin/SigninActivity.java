@@ -349,7 +349,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     private void pauseFaceVerifyButton()
     {
         mFaceVerify.setEnabled(false);
-        mFaceVerify.setTextColor(getColor(R.color.grey));
+        mFaceVerify.setTextColor(getResources().getColor(R.color.grey));
         mFaceVerify.setText("正在进行人脸验证...");
     }
 
@@ -357,7 +357,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     private void disableFaceVerifyButton()
     {
         mFaceVerify.setEnabled(false);
-        mFaceVerify.setTextColor(getColor(R.color.white));
+        mFaceVerify.setTextColor(getResources().getColor(R.color.white));
         mFaceVerify.setBackground(getDrawable(R.drawable.button_ok));
         mFaceVerify.setText("人脸验证通过");
     }
@@ -366,7 +366,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     private void enableFaceVerifyButton()
     {
         mFaceVerify.setEnabled(true);
-        mFaceVerify.setTextColor(getColor(R.color.white));
+        mFaceVerify.setTextColor(getResources().getColor(R.color.white));
         mFaceVerify.setText("人脸验证");
     }
 
@@ -374,7 +374,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     private void pauseWifiVerifyButton()
     {
         mWifiVerify.setEnabled(false);
-        mWifiVerify.setTextColor(getColor(R.color.grey));
+        mWifiVerify.setTextColor(getResources().getColor(R.color.grey));
         mWifiVerify.setText("正在进行wifi验证...");
     }
 
@@ -382,7 +382,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     private void disableWifiVerifyButton()
     {
         mWifiVerify.setEnabled(false);
-        mWifiVerify.setTextColor(getColor(R.color.white));
+        mWifiVerify.setTextColor(getResources().getColor(R.color.white));
         mWifiVerify.setBackground(getDrawable(R.drawable.button_ok));
         mWifiVerify.setText("wifi验证通过");
     }
@@ -391,7 +391,7 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
     private void enableWifiVerifyButton()
     {
         mWifiVerify.setEnabled(true);
-        mWifiVerify.setTextColor(getColor(R.color.white));
+        mWifiVerify.setTextColor(getResources().getColor(R.color.white));
         mWifiVerify.setText("wifi验证");
     }
 }

@@ -73,7 +73,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         mClassroomTeacherTextView = (TextView)findViewById(R.id.text_class_teacher);
         mSigninButton = (Button)findViewById(R.id.btn_signin);
         mRefresh = (SwipeRefreshLayout)findViewById(R.id.refresh);
-        mRefresh.setColorSchemeColors(getColor(R.color.colorPrimary));
+        mRefresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         mPrompt = (TextView)findViewById(R.id.text_prompt);
     }
 
@@ -273,7 +273,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     {
         mSigninButton.setEnabled(true);
         mSigninButton.setText("点击签到");
-        mSigninButton.setTextColor(getColor(R.color.white));
+        mSigninButton.setTextColor(getResources().getColor(R.color.white));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -282,7 +282,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         mSigninButton.setEnabled(false);
         mSigninButton.setText("签到尚未开始");
         mSigninButton.setBackground(getDrawable(R.drawable.button_normal));
-        mSigninButton.setTextColor(getColor(R.color.grey));
+        mSigninButton.setTextColor(getResources().getColor(R.color.grey));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -290,7 +290,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     {
         mSigninButton.setEnabled(false);
         mSigninButton.setText("签到成功");
-        mSigninButton.setTextColor(getColor(R.color.white));
+        mSigninButton.setTextColor(getResources().getColor(R.color.white));
         mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
     }
 

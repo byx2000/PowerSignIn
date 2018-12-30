@@ -182,12 +182,12 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
             if (classroom.isSignin())
             {
                 holder.isSignin.setText("正在签到");
-                holder.isSignin.setTextColor(getColor(R.color.colorEmphasis));
+                holder.isSignin.setTextColor(getResources().getColor(R.color.colorEmphasis));
             }
             else
             {
                 holder.isSignin.setText("未在签到");
-                holder.isSignin.setTextColor(getColor(R.color.colorIgnore));
+                holder.isSignin.setTextColor(getResources().getColor(R.color.colorIgnore));
             }
         }
 

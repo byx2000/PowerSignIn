@@ -66,7 +66,7 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
         mRecyclerView = (RecyclerView)findViewById(R.id.recycler);
         mEmptyText = (TextView)findViewById(R.id.text_empty_text);
         mRefresh = (SwipeRefreshLayout)findViewById(R.id.refresh);
-        mRefresh.setColorSchemeColors(getColor(R.color.colorPrimary));
+        mRefresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
     }
 
     @Override
@@ -245,7 +245,7 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
                                 if (student.getObjectId().equals(mStudentObjectId))
                                 {
                                     holder.signinStateTextView.setText("签到成功");
-                                    holder.signinStateTextView.setTextColor(getColor(R.color.green));
+                                    holder.signinStateTextView.setTextColor(getResources().getColor(R.color.green));
                                     flag = false;
                                     break;
                                 }
@@ -254,7 +254,7 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
                             if (flag)
                             {
                                 holder.signinStateTextView.setText("正在签到");
-                                holder.signinStateTextView.setTextColor(getColor(R.color.colorEmphasis));
+                                holder.signinStateTextView.setTextColor(getResources().getColor(R.color.colorEmphasis));
                             }
                         }
                     }
@@ -263,7 +263,7 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
             else
             {
                 holder.signinStateTextView.setText("未在签到");
-                holder.signinStateTextView.setTextColor(getColor(R.color.colorIgnore));
+                holder.signinStateTextView.setTextColor(getResources().getColor(R.color.colorIgnore));
             }
 
             holder.classroomObjectId = classroom.getObjectId();

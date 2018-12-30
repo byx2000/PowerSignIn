@@ -167,7 +167,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     private void disableLoginButton()
     {
         mLoginButton.setEnabled(false);
-        mLoginButton.setTextColor(getColor(R.color.grey));
+        mLoginButton.setTextColor(getResources().getColor(R.color.grey));
         mLoginButton.setText("正在登陆...");
     }
 
@@ -175,7 +175,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     private void enableLoginButton()
     {
         mLoginButton.setEnabled(true);
-        mLoginButton.setTextColor(getColor(R.color.white));
+        mLoginButton.setTextColor(getResources().getColor(R.color.white));
         mLoginButton.setText("登陆");
     }
 }
