@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,26 +22,30 @@ import com.example.powersignin.bean.Student;
 
 import java.util.List;
 
-public class StudentClassInfoActivity extends BaseActivity implements View.OnClickListener
+public class StudentClassInfoActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener
 {
     private static final String EXTRA_CLASSROOM_OBJECTID = "classroom_objectid";
     private static final String EXTRA_STUDENT_OBJECTID = "student_objectid";
+    public static final String EXTRA_POSITION = "position";
 
     private Toolbar mToolbar;
     private TextView mClassroomNameTextView;
     private TextView mClassroomCodeTextView;
     private TextView mClassroomTeacherTextView;
     private Button mSigninButton;
+    private SwipeRefreshLayout mRefresh;
+    private int mPosition;
 
     private String mClassroomObjectId;
     private String mClassroomName;
     private String mStudentObjectId;
 
-    public static Intent newIntent(Context context, String classroomObjectId, String studentObjectId)
+    public static Intent newIntent(Context context, String classroomObjectId, String studentObjectId, int position)
     {
         Intent intent = new Intent(context, StudentClassInfoActivity.class);
         intent.putExtra(EXTRA_CLASSROOM_OBJECTID, classroomObjectId);
         intent.putExtra(EXTRA_STUDENT_OBJECTID, studentObjectId);
+        intent.putExtra(EXTRA_POSITION, position);
         return intent;
     }
 
@@ -56,6 +61,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         setContentView(R.layout.activity_student_class_info);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initViews()
     {
@@ -64,12 +70,15 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         mClassroomCodeTextView = (TextView)findViewById(R.id.text_code);
         mClassroomTeacherTextView = (TextView)findViewById(R.id.text_class_teacher);
         mSigninButton = (Button)findViewById(R.id.btn_signin);
+        mRefresh = (SwipeRefreshLayout)findViewById(R.id.refresh);
+        mRefresh.setColorSchemeColors(getColor(R.color.colorPrimary));
     }
 
     @Override
     protected void initListeners()
     {
         mSigninButton.setOnClickListener(this);
+        mRefresh.setOnRefreshListener(this);
     }
 
     @Override
@@ -79,7 +88,11 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mClassroomObjectId = getIntent().getStringExtra(EXTRA_CLASSROOM_OBJECTID);
-        findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
+        mStudentObjectId = getIntent().getStringExtra(EXTRA_STUDENT_OBJECTID);
+        updateData();
+        mPosition = getIntent().getIntExtra(EXTRA_POSITION, -1);
+
+        /*findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
         {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -129,9 +142,9 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                     toast("查找班级失败: " + e.getMessage());
                 }
             }
-        });
+        });*/
 
-        mStudentObjectId = getIntent().getStringExtra(EXTRA_STUDENT_OBJECTID);
+
     }
 
     //创建Toolbar菜单
@@ -166,7 +179,9 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
                             public void succeed()
                             {
                                 toast("退出班级成功");
-                                setResult(RESULT_OK);
+                                Intent intent = new Intent();
+                                intent.putExtra(EXTRA_POSITION, -1);
+                                setResult(RESULT_OK, intent);
                                 finish();
                             }
 
@@ -254,6 +269,7 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     {
         mSigninButton.setEnabled(false);
         mSigninButton.setText("签到尚未开始");
+        mSigninButton.setBackground(getDrawable(R.drawable.button_normal));
         mSigninButton.setTextColor(getColor(R.color.grey));
     }
 
@@ -264,5 +280,78 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         mSigninButton.setText("签到成功");
         mSigninButton.setTextColor(getColor(R.color.white));
         mSigninButton.setBackground(getDrawable(R.drawable.button_ok));
+    }
+
+    private void updateData()
+    {
+        findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
+        {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void done(final Classroom classroom, BmobException e)
+            {
+                if (e == null)
+                {
+                    mClassroomName = classroom.getDescription();
+                    mClassroomNameTextView.setText("\t" + mClassroomName);
+                    mClassroomCodeTextView.setText("\t" + mClassroomObjectId);
+                    mClassroomTeacherTextView.setText("\t" + classroom.getTeacherNickname());
+                    if (classroom.isSignin())
+                    {
+                        //查找学生是否已签到
+                        findSigninedStudents(classroom.getCurrentSigninEvent(), new FindListener<Student>()
+                        {
+                            @Override
+                            public void done(List<Student> list, BmobException e)
+                            {
+                                if (e == null)
+                                {
+                                    setSigninButtonEnable();
+                                    for (Student student : list)
+                                    {
+                                        if (student.getObjectId().equals(mStudentObjectId))
+                                        {
+                                            setSigninButtonSucceed();
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    toast("获取签到信息失败: " + e.getMessage());
+                                    finish();
+                                }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        setSigninButtonDisable();
+                    }
+                }
+                else
+                {
+                    toast("查找班级失败: " + e.getMessage());
+                }
+
+                mRefresh.setRefreshing(false);
+            }
+        });
+    }
+
+    //下拉刷新页面
+    @Override
+    public void onRefresh()
+    {
+        updateData();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_POSITION, mPosition);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

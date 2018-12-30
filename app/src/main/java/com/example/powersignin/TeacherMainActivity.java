@@ -15,6 +15,7 @@ import android.view.*;
 import android.widget.TextView;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListener;
 import com.example.powersignin.bean.Classroom;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
     private String mTeacherUsername;
     private String mTeacherNickname;
     private List<Classroom> classrooms;
+    private Adapter mAdapter;
 
     public static Intent newIntent(Context context, String teacherUsername, String teacherObjectId, String teacherNickname)
     {
@@ -131,6 +133,7 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
         public TextView classNameTextView;
         public TextView classCodeTextView;
         public TextView isSignin;
+        public int position;
 
         public ViewHolder(View itemView)
         {
@@ -145,7 +148,7 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
                 @Override
                 public void onClick(View v)
                 {
-                    startTeacherClassInfoActivity(classNameTextView.getText().toString(), classCodeTextView.getText().toString());
+                    startTeacherClassInfoActivity(classNameTextView.getText().toString(), classCodeTextView.getText().toString(), position);
                 }
             });
         }
@@ -173,6 +176,7 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
         public void onBindViewHolder(ViewHolder holder, int position)
         {
             Classroom classroom = classrooms.get(position);
+            holder.position = position;
             holder.classNameTextView.setText(classroom.getDescription());
             holder.classCodeTextView.setText(classroom.getObjectId());
             if (classroom.isSignin())
@@ -217,7 +221,8 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
                         classrooms = list;
                         //设置RecyclerView
                         mRecyclerView.setLayoutManager(new LinearLayoutManager(TeacherMainActivity.this));
-                        mRecyclerView.setAdapter(new Adapter(classrooms));
+                        mAdapter = new Adapter(classrooms);
+                        mRecyclerView.setAdapter(mAdapter);
                     }
 
 
@@ -249,7 +254,36 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
             if (resultCode == RESULT_OK)
             {
                 //更新教师班级列表
-                updateClassroomsList();
+                //updateClassroomsList();
+
+                final int position = data.getIntExtra(TeacherClassInfoActivity.EXTRA_POSITION, -1);
+                //toast(Integer.toString(position));
+
+                if (position != -1)
+                {
+                    //更新第position个数据
+                    findClassroom(classrooms.get(position).getObjectId(), new QueryListener<Classroom>()
+                    {
+                        @Override
+                        public void done(Classroom classroom, BmobException e)
+                        {
+                            if (e == null)
+                            {
+                                classrooms.remove(position);
+                                classrooms.add(position, classroom);
+                                mAdapter.notifyItemChanged(position);
+                            }
+                            else
+                            {
+                                toast("数据更新失败");
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    updateClassroomsList();
+                }
             }
             else
             {

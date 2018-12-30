@@ -28,6 +28,7 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
 {
     public static final String EXTRA_CLASS_NAME = "class_name";
     public static final String EXTRA_CLASS_CODE = "class_code";
+    public static final String EXTRA_POSITION = "position";
 
     private Toolbar mToolbar;
     private TextView mClassroomNameTextView;
@@ -41,15 +42,18 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
     private String mClassroomObjectId;
     private String mSigninEventObjectId;
 
+    private int position;
+
     private WifiUtil mWifiUtil;
 
     private boolean flag;
 
-    public static Intent newIntent(Context context, String classroomName, String classroomObjectId)
+    public static Intent newIntent(Context context, String classroomName, String classroomObjectId, int position)
     {
         Intent intent = new Intent(context, TeacherClassInfoActivity.class);
         intent.putExtra(EXTRA_CLASS_NAME, classroomName);
         intent.putExtra(EXTRA_CLASS_CODE, classroomObjectId);
+        intent.putExtra(EXTRA_POSITION, position);
         return intent;
     }
 
@@ -125,6 +129,8 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         });
 
         mWifiUtil = new WifiUtil(this);
+
+        position = getIntent().getIntExtra(EXTRA_POSITION, -1);
     }
 
     //创建Toolbar菜单
@@ -274,7 +280,9 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                             public void succeed()
                             {
                                 toast("删除成功");
-                                setResult(RESULT_OK);
+                                Intent intent = new Intent();
+                                intent.putExtra(EXTRA_POSITION, -1);
+                                setResult(RESULT_OK, intent);
                                 finish();
                             }
 
@@ -435,5 +443,14 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_POSITION, position);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

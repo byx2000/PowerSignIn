@@ -195,9 +195,9 @@ public abstract class BaseActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    protected void startTeacherClassInfoActivity(String classroomName, String classroomObjectId)
+    protected void startTeacherClassInfoActivity(String classroomName, String classroomObjectId, int position)
     {
-        Intent intent = TeacherClassInfoActivity.newIntent(this, classroomName, classroomObjectId);
+        Intent intent = TeacherClassInfoActivity.newIntent(this, classroomName, classroomObjectId, position);
         startActivityForResult(intent, REQUEST_TEACHER_CLASS_INFO);
     }
 
@@ -226,9 +226,9 @@ public abstract class BaseActivity extends AppCompatActivity
         startActivityForResult(intent, REQUEST_JOIN_CLASS);
     }
 
-    protected void startStudentClassInfoActivity(String classroomObjectId, String studentObjectId)
+    protected void startStudentClassInfoActivity(String classroomObjectId, String studentObjectId, int position)
     {
-        Intent intent = StudentClassInfoActivity.newIntent(this, classroomObjectId, studentObjectId);
+        Intent intent = StudentClassInfoActivity.newIntent(this, classroomObjectId, studentObjectId, position);
         startActivityForResult(intent, REQUEST_STUDENT_CLASS_INFO);
     }
 

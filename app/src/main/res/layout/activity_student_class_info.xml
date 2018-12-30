@@ -133,80 +133,96 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
-            android:id="@+id/info"
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/radius_bg"
-            android:orientation="vertical"
-            android:padding="10dip">
+            android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:text="班级名称"
-                style="@style/CustomTextView"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-                android:id="@+id/text_class_name"
-                style="@style/CustomTextView"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                    android:id="@+id/info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/radius_bg"
+                    android:orientation="vertical"
+                    android:padding="10dip">
 
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginBottom="5dip"
-                android:layout_marginTop="5dip"
-                android:background="#eeeeee" />
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#424242"
+                        android:text="班级名称"
+                        style="@style/CustomTextView"/>
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:text="教师"
-                style="@style/CustomTextView"/>
+                <TextView
+                        android:id="@+id/text_class_name"
+                        style="@style/CustomTextView"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        <TextView
-                android:id="@+id/text_class_teacher"
-                style="@style/CustomTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_marginBottom="5dip"
+                        android:layout_marginTop="5dip"
+                        android:background="#eeeeee" />
 
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_marginBottom="5dip"
-                android:layout_marginTop="5dip"
-                android:background="#eeeeee" />
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#424242"
+                        android:text="教师"
+                        style="@style/CustomTextView"/>
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:text="班级邀请码(点击复制)"
-                style="@style/CustomTextView"/>
+                <TextView
+                        android:id="@+id/text_class_teacher"
+                        style="@style/CustomTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        <TextView
-                android:id="@+id/text_code"
-                style="@style/CustomTextView"
-                android:textStyle="italic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_marginBottom="5dip"
+                        android:layout_marginTop="5dip"
+                        android:background="#eeeeee" />
 
-    </LinearLayout>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#424242"
+                        android:text="班级邀请码(点击复制)"
+                        style="@style/CustomTextView"/>
 
-    <Button
-            android:id="@+id/btn_signin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/CustomButton"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"/>
+                <TextView
+                        android:id="@+id/text_code"
+                        style="@style/CustomTextView"
+                        android:textStyle="italic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btn_signin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomButton"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 
 </LinearLayout>
+
