@@ -232,13 +232,6 @@ public abstract class BaseActivity extends AppCompatActivity
         startActivityForResult(intent, REQUEST_STUDENT_CLASS_INFO);
     }
 
-    protected void startStartSigninActivity(String classroomName, String classroomObjectId, String signinEventObjectId)
-    {
-        Intent intent = StartSigninActivity.newIntent(this, classroomName, classroomObjectId, signinEventObjectId);
-        //startActivity(intent);
-        startActivityForResult(intent, REQUEST_START_SIGNIN);
-    }
-
     protected void startCameraActivity(Uri imageUri)
     {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");

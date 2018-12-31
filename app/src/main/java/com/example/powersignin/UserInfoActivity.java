@@ -187,7 +187,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     }
                     else
                     {
-                        toast("查找学生失败");
+                        toast("查找学生失败: " + e.getMessage());
                     }
                 }
             });

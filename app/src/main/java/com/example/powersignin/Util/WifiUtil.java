@@ -139,14 +139,10 @@ public class WifiUtil
     }
 
     //Android8.0及以上 打开热点
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    /*@RequiresApi(api = Build.VERSION_CODES.O)
     public void openHotspotOreo(final WifiHotspotOpenListener wifiHotspotOpenListener)
     {
-        /*if (!isGpsOpen())
-        {
-            wifiHotspotOpenListener.failed("no gps");
-            return;
-        }*/
+
 
         wifiManager.startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback()
         {
@@ -171,9 +167,9 @@ public class WifiUtil
                 wifiHotspotOpenListener.failed("wifi hotspot open failed on oreo");
             }
         }, new Handler());
-    }
+    }*/
 
-    public void closeHotspotOreo(WifiHotspotCloseListener wifiHotspotCloseListener)
+    /*public void closeHotspotOreo(WifiHotspotCloseListener wifiHotspotCloseListener)
     {
         try
         {
@@ -200,10 +196,10 @@ public class WifiUtil
         }
 
         wifiHotspotCloseListener.succeed();
-    }
+    }*/
 
     //Android 8.0以下 打开热点
-    public void openHotspotPreOreo(WifiHotspotOpenListener wifiHotspotOpenListener)
+    /*public void openHotspotPreOreo(WifiHotspotOpenListener wifiHotspotOpenListener)
     {
         if (wifiManager.isWifiEnabled())
         {
@@ -270,10 +266,10 @@ public class WifiUtil
             wifiHotspotOpenListener.failed("exception pre oreo");
             e.printStackTrace();
         }
-    }
+    }*/
 
     //Android8.0以下 关闭热点
-    private void closeHotspotPreOreo(WifiHotspotCloseListener wifiHotspotCloseListener)
+    /*private void closeHotspotPreOreo(WifiHotspotCloseListener wifiHotspotCloseListener)
     {
         try
         {
@@ -289,10 +285,10 @@ public class WifiUtil
 
         //Toast.makeText(MainActivity.this, "执行失败", Toast.LENGTH_SHORT).show();
         wifiHotspotCloseListener.succeed();
-    }
+    }*/
 
     //打开热点
-    public void openHotspot(WifiHotspotOpenListener wifiHotspotOpenListener)
+    /*public void openHotspot(WifiHotspotOpenListener wifiHotspotOpenListener)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -309,10 +305,10 @@ public class WifiUtil
         {
             openHotspotPreOreo(wifiHotspotOpenListener);
         }
-    }
+    }*/
 
     //关闭热点
-    public void closeHotspot(WifiHotspotCloseListener wifiHotspotCloseListener)
+    /*public void closeHotspot(WifiHotspotCloseListener wifiHotspotCloseListener)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -322,7 +318,7 @@ public class WifiUtil
         {
             closeHotspotPreOreo(wifiHotspotCloseListener);
         }
-    }
+    }*/
 
     //判断wifi开关是否开启
     public boolean isWifiEnabled()
