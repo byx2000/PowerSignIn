@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.Classroom;
 import com.example.powersignin.bean.SigninEvent;
 
@@ -127,6 +128,12 @@ public class SigninHistoryActivity extends BaseActivity
                 @Override
                 public void onClick(View v)
                 {
+                    if (!new WifiUtil(SigninHistoryActivity.this).isNetworkConnected())
+                    {
+                        toast("请检查网络连接!");
+                        return;
+                    }
+
                     //启动签到详情Activity
                     startSigninEventDetailActivity(mEvents.get(index).getObjectId());
                 }

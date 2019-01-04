@@ -15,6 +15,7 @@ import android.widget.TextView;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.Classroom;
 import com.example.powersignin.bean.Student;
 
@@ -108,6 +109,12 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
                 startJoinClassActivity(mStudentObjectId);
                 break;
             case R.id.my_info:
+                if (!new WifiUtil(this).isNetworkConnected())
+                {
+                    toast("请检查网络连接!");
+                    return true;
+                }
+
                 startUserInfoActivity(mStudentUsername, mStudentObjectId, mStudentNickname, "student");
                 break;
         }
@@ -124,10 +131,10 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
             {
                 updateClassroomsList();
             }
-            else
+            /*else
             {
                 updateClassroomsList();
-            }
+            }*/
         }
         else if (requestCode == REQUEST_STUDENT_CLASS_INFO)
         {
@@ -172,6 +179,13 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onRefresh()
     {
+        if (!new WifiUtil(this).isNetworkConnected())
+        {
+            toast("请检查网络连接!");
+            mRefresh.setRefreshing(false);
+            return;
+        }
+
         //更新班级列表
         updateClassroomsList();
     }
@@ -197,6 +211,12 @@ public class StudentMainActivity extends BaseActivity implements SwipeRefreshLay
                 @Override
                 public void onClick(View v)
                 {
+                    if (!new WifiUtil(StudentMainActivity.this).isNetworkConnected())
+                    {
+                        toast("请检查网络连接!");
+                        return;
+                    }
+
                     startStudentClassInfoActivity(classroomObjectId, mStudentObjectId, position);
                 }
             });

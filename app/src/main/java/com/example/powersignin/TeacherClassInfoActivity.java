@@ -155,6 +155,12 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         switch (item.getItemId())
         {
             case R.id.start_signin:
+                if (!mWifiUtil.isNetworkConnected())
+                {
+                    toast("请检查网络连接!");
+                    return true;
+                }
+
                 item.setEnabled(false);
 
                 //检测当前是否处于签到状态
@@ -269,6 +275,12 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
                 });
                 break;
             case R.id.delete_class:
+                if (!mWifiUtil.isNetworkConnected())
+                {
+                    toast("请检查网络连接!");
+                    return true;
+                }
+
                 //显示删除警告对话框
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setIcon(R.drawable.warning);
@@ -320,6 +332,12 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         //查看学生信息
         if (v == mViewStudentButton)
         {
+            if (!mWifiUtil.isNetworkConnected())
+            {
+                toast("请检查网络连接!");
+                return;
+            }
+
             //查找该班级的所有学生
             findClassroomStudents(mClassroomObjectId, new FindListener<Student>()
             {
@@ -379,6 +397,12 @@ public class TeacherClassInfoActivity extends BaseActivity implements View.OnCli
         //查看签到历史
         else if (v == mViewSigninHistory)
         {
+            if (!mWifiUtil.isNetworkConnected())
+            {
+                toast("请检查网络连接!");
+                return;
+            }
+
             startSigninHistoryActivity(mClassroomObjectId);
         }
         //点击复制班级邀请码

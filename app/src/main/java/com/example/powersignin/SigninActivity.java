@@ -113,6 +113,12 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
         //人脸识别验证
         if (v == mFaceVerify)
         {
+            if (!mWifiUtil.isNetworkConnected())
+            {
+                toast("请检查网络连接!");
+                return;
+            }
+
             pauseFaceVerifyButton();
 
             isFaceVerifyPass = false;
@@ -145,13 +151,20 @@ public class SigninActivity extends BaseActivity implements View.OnClickListener
         //wifi验证
         else if (v == mWifiVerify)
         {
-            pauseWifiVerifyButton();
+            if (!mWifiUtil.isNetworkConnected())
+            {
+                toast("请检查网络连接!");
+                return;
+            }
 
             if (!mWifiUtil.isGpsOpen())
             {
                 toast("请打开GPS");
                 return;
             }
+
+            pauseWifiVerifyButton();
+
             findClassroom(mClassroomObjectId, new QueryListener<Classroom>()
             {
                 @Override

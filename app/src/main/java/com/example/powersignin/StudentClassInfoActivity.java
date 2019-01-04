@@ -18,6 +18,7 @@ import android.widget.TextView;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.Classroom;
 import com.example.powersignin.bean.Student;
 
@@ -167,6 +168,12 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
         switch (item.getItemId())
         {
             case R.id.quit_class:
+                if (!new WifiUtil(this).isNetworkConnected())
+                {
+                    toast("请检查网络连接!");
+                    return true;
+                }
+
                 //显示退出警告对话框
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setIcon(R.drawable.warning);
@@ -216,6 +223,12 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     @Override
     public void onClick(View v)
     {
+        if (!new WifiUtil(this).isNetworkConnected())
+        {
+            toast("请检查网络连接!");
+            return;
+        }
+
         //进入签到页面
         if (v == mSigninButton)
         {
@@ -355,6 +368,13 @@ public class StudentClassInfoActivity extends BaseActivity implements View.OnCli
     @Override
     public void onRefresh()
     {
+        if (!new WifiUtil(this).isNetworkConnected())
+        {
+            toast("请检查网络连接!");
+            mRefresh.setRefreshing(false);
+            return;
+        }
+
         updateData();
     }
 

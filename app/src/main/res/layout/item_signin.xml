@@ -136,7 +136,7 @@
                     android:id="@+id/text_count"
                     style="@style/CustomTextView"
                     android:textStyle="bold"
-                    android:textColor="#e65100"
+                    android:textColor="#5677fc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </LinearLayout>

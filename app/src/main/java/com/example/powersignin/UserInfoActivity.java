@@ -16,6 +16,7 @@ import cn.bmob.v3.listener.QueryListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.powersignin.Util.FileUtil;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.Student;
 import com.example.powersignin.bean.Teacher;
 
@@ -200,6 +201,12 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         //退出登陆按钮
         if (v == mLogoutButton)
         {
+            if (!new WifiUtil(this).isNetworkConnected())
+            {
+                toast("请检查网络连接!");
+                return;
+            }
+
             //弹出对话框
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setIcon(R.drawable.warning);

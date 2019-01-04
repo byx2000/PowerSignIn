@@ -16,6 +16,7 @@ import android.widget.TextView;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.Classroom;
 
 import java.util.List;
@@ -113,6 +114,11 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
                 startNewClassActivity(mTeacherObjectId);
                 break;
             case R.id.my_info:
+                if (!new WifiUtil(this).isNetworkConnected())
+                {
+                    toast("请检查网络连接!");
+                    return true;
+                }
                 startUserInfoActivity(mTeacherUsername, mTeacherObjectId, mTeacherNickname, "teacher");
                 break;
         }
@@ -124,6 +130,12 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onRefresh()
     {
+        if (!new WifiUtil(this).isNetworkConnected())
+        {
+            toast("请检查网络连接!");
+            mRefresh.setRefreshing(false);
+            return;
+        }
         //更新班级列表
         updateClassroomsList();
     }
@@ -148,6 +160,12 @@ public class TeacherMainActivity extends BaseActivity implements SwipeRefreshLay
                 @Override
                 public void onClick(View v)
                 {
+                    if (!new WifiUtil(TeacherMainActivity.this).isNetworkConnected())
+                    {
+                        toast("请检查网络连接!");
+                        return;
+                    }
+
                     startTeacherClassInfoActivity(classNameTextView.getText().toString(), classCodeTextView.getText().toString(), position);
                 }
             });

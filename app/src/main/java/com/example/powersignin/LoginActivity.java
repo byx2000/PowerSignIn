@@ -12,6 +12,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import com.example.powersignin.Util.FileUtil;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.Student;
 import com.example.powersignin.bean.Teacher;
 import com.example.powersignin.bean.User;
@@ -66,8 +67,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         //登陆
         if (v == mLoginButton)
         {
-            /*mLoginButton.setEnabled(false);
-            mLoginButton.setText("正在登陆...");*/
+            if (!new WifiUtil(this).isNetworkConnected())
+            {
+                toast("请检查网络连接!");
+                return;
+            }
+
             disableLoginButton();
 
             final String username = mUsernameEditText.getText().toString();

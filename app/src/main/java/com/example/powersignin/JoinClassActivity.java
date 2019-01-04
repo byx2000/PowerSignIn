@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.example.powersignin.Util.WifiUtil;
 
 public class JoinClassActivity extends BaseActivity implements View.OnClickListener
 {
@@ -66,8 +67,12 @@ public class JoinClassActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v)
     {
-        //mJoinClassButton.setEnabled(false);
-        //mJoinClassButton.setText("正在加入...");
+        if (!new WifiUtil(this).isNetworkConnected())
+        {
+            toast("请检查网络连接!");
+            return;
+        }
+
         disableJoinClassButton();
 
         String classroomObjectId = mClassCodeEditText.getText().toString();

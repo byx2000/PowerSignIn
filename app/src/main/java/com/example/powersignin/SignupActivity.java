@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.powersignin.Util.FaceUtil;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.User;
 import id.zelory.compressor.Compressor;
 
@@ -104,6 +105,12 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         //注册用户
         if (v == mSignupButton)
         {
+            if (!new WifiUtil(this).isNetworkConnected())
+            {
+                toast("请检查网络连接!");
+                return;
+            }
+
             if (!hasFacePhoto)
             {
                 toast("请拍摄面部照片");

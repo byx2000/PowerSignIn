@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListener;
+import com.example.powersignin.Util.WifiUtil;
 import com.example.powersignin.bean.Teacher;
 
 public class NewClassActivity extends BaseActivity implements View.OnClickListener
@@ -70,6 +71,12 @@ public class NewClassActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v)
     {
+        if (!new WifiUtil(this).isNetworkConnected())
+        {
+            toast("请检查网络连接!");
+            return;
+        }
+
         final String description = classroomDescriptionTextView.getText().toString();
 
         if (description.equals(""))
