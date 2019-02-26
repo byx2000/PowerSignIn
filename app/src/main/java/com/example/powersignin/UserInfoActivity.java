@@ -133,7 +133,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                             {
                                 if (e == null)
                                 {
-                                    Glide.with(UserInfoActivity.this).load(s).diskCacheStrategy(DiskCacheStrategy.NONE).into(mFaceImage);
+                                    Glide.with(UserInfoActivity.this).load(s).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(mFaceImage);
                                 }
                                 else
                                 {
