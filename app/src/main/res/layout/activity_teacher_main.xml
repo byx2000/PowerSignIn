@@ -4,16 +4,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
-<!--
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_teacher_main_activity"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:titleTextColor="#000000"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap"/>
--->
+
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_teacher_main_activity"
             android:layout_width="match_parent"

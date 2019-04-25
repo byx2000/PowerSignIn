@@ -3,52 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
-<!--
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_login_activity"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap" />
-      -->
-<!--
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dip"
-            android:padding="10dip"
-            android:background="@drawable/radius_bg"
-            android:orientation="vertical">
-
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:id="@+id/edit_username"
-                android:hint="手机号"
-                android:background="#00000000"/>
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginBottom="5dip"
-                android:layout_marginTop="5dip"
-                android:background="#eeeeee" />
-
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:id="@+id/edit_password"
-                android:hint="密码"
-                android:background="#00000000"/>
-
-    </LinearLayout>
--->
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/title"
@@ -102,18 +57,7 @@
                         android:layout_width="35dip"
                         android:layout_height="35dip"
                         android:src="@drawable/phone"/>
-<!--
-                <EditText
-                        android:id="@+id/edit_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:layout_marginLeft="10dip"
-                        android:background="#00000000"
-                        android:hint="手机号"
-                        android:padding="5dip"
-                        android:textSize="16sp"/>
--->
+
                 <EditText
                         android:id="@+id/edit_username"
                         style="@style/CustomEditText"
@@ -143,19 +87,7 @@
                         android:layout_width="35dip"
                         android:layout_height="35dip"
                         android:src="@drawable/password"/>
-<!--
-                <EditText
-                        android:id="@+id/edit_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dip"
-                        android:background="#00000000"
-                        android:hint="密码"
-                        android:inputType="textPassword"
-                        android:padding="5dip"
-                        android:textSize="16sp"
-                        android:layout_below="@+id/input_layout"/>
--->
+
                 <EditText
                         style="@style/CustomEditText"
                         android:id="@+id/edit_password"
@@ -168,21 +100,6 @@
 
             </LinearLayout>
         </LinearLayout>
-<!--
-        <Button
-                android:layout_below="@id/input"
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="登陆"
-                style="@style/CustomButton"
-                android:paddingBottom="2dip"
-                android:paddingLeft="15dip"
-                android:paddingRight="15dip"
-                android:paddingTop="2dip"
-                android:textSize="20sp"
-                android:textColor="#ffffff"/>
--->
 
         <Button
                 android:layout_below="@id/input"
@@ -195,16 +112,4 @@
                 android:layout_marginRight="20sp"/>
     </RelativeLayout>
 
-
-<!--
-    <TextView
-            android:id="@+id/text_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:textSize="15sp"
-            android:layout_gravity="center"
-            android:text="注册"
-            android:textColor="@color/colorAccent"/>
--->
 </RelativeLayout>
